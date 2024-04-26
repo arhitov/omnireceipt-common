@@ -1,0 +1,44 @@
+{
+    "name": "arhitov/omnireceipt-common",
+    "description": "Common components for the Omnireceipt fiscal receipt processing library",
+    "version": "0.0.0",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "receipt",
+        "fiscal",
+        "omnireceipt"
+    ],
+    "homepage": "https://github.com/arhitov/omnireceipt-common",
+    "authors": [
+        {
+            "name": "Alexander Arhitov",
+            "email": "clgsru@gmail.com",
+            "homepage": "https://github.com/arhitov/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Omnireceipt\\Common\\": "src"
+        },
+        "classmap": [
+            "src/Omnireceipt.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omnireceipt\\Common\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
