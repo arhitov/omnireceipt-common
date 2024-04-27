@@ -30,7 +30,8 @@ class ReceiptItem implements ReceiptItemInterface
     ];
 
     public function __construct(
-        private array $properties = []
+        array $properties = []
     ) {
+        $this->properties = $properties;
     }
 }

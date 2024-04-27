@@ -8,6 +8,7 @@ use Omnireceipt\Common\Exceptions\Property\PropertyValidateException;
 
 trait PropertiesTrait
 {
+    protected array $properties = [];
     protected array $propertiesError = [];
 
     /**
