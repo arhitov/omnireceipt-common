@@ -26,6 +26,7 @@ class PropertiesTraitTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testGetterException()
     {
 
@@ -38,6 +39,7 @@ class PropertiesTraitTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testValidator()
     {
         $object = self::makeObject();
@@ -92,6 +94,7 @@ class PropertiesTraitTest extends TestCase
      * @depends testValidator
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testValidator')]
     public function testValidatorException()
     {
         $object = self::makeObject();

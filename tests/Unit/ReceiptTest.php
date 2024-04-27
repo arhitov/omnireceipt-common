@@ -24,6 +24,7 @@ class ReceiptTest extends TestCase
      * @depends testBase
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testBase')]
     public function testGetterAndSetter()
     {
         $receipt = new Receipt;
@@ -60,6 +61,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testGetterException()
     {
 
@@ -73,6 +75,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testValidator()
     {
         $receipt = ReceiptFactory::create();
@@ -88,6 +91,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testItems()
     {
         $receipt = ReceiptFactory::create();
