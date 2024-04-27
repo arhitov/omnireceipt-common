@@ -7,6 +7,9 @@ jobs:
 
   phpunit_11:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
     strategy:
       matrix:
         php: ['8.0', '8.1', '8.2', '8.3']
