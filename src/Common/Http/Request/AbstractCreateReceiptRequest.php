@@ -2,14 +2,20 @@
 
 namespace Omnireceipt\Common\Http\Request;
 
+use Omnireceipt\Common\Entities\Customer;
 use Omnireceipt\Common\Entities\Receipt;
 use Omnireceipt\Common\Entities\Seller;
 
 abstract class AbstractCreateReceiptRequest extends AbstractRequest
 {
     protected Receipt $receipt;
-
     protected Seller $seller;
+    protected ?Customer $customer;
+
+    public function getReceipt(): Receipt
+    {
+        return $this->receipt;
+    }
 
     public function setReceipt(Receipt $receipt): self
     {
@@ -17,9 +23,9 @@ abstract class AbstractCreateReceiptRequest extends AbstractRequest
         return $this;
     }
 
-    public function getReceipt(): Receipt
+    public function getSeller(): Seller
     {
-        return $this->receipt;
+        return $this->seller;
     }
 
     public function setSeller(Seller $seller): self
@@ -28,8 +34,14 @@ abstract class AbstractCreateReceiptRequest extends AbstractRequest
         return $this;
     }
 
-    public function getSeller(): Seller
+    public function getCustomer(): ?Customer
     {
-        return $this->seller;
+        return $this->customer;
+    }
+
+    public function setCustomer(Customer $customer): self
+    {
+        $this->customer = $customer;
+        return $this;
     }
 }

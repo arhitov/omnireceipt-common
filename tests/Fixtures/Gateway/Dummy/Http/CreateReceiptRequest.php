@@ -41,7 +41,7 @@ class CreateReceiptRequest extends AbstractCreateReceiptRequest
             'info' => $receipt->getInfo(),
             'emailphone' => $receipt->getCustomerEmail() ?? $receipt->getCustomerPhone(),
             'pay_type' => '1',
-            'firm_address' => $this->getSeller()->getAddress(),
+            'firm_address' => $this->getSeller()->getAddressOrNull(),
             'goods' => $goods,
         ];
     }

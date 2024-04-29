@@ -62,24 +62,28 @@ abstract class AbstractGateway implements GatewayInterface
         return [];
     }
 
-    public static function getClassEntitiesNameCustomer(): string
-    {
-        return Customer::class;
-    }
 
-    public static function getClassEntitiesNameSeller(): string
+    /**
+     * ######
+     * Seller
+     * ######
+     */
+
+    /**
+     * @return string
+     */
+    public static function classNameSeller(): string
     {
         return Seller::class;
     }
 
-    public static function getClassEntitiesNameReceipt(): string
+    /**
+     * @return array
+     */
+    public function getDefaultPropertiesSeller(): array
     {
-        return Receipt::class;
+        return [];
     }
-
-    abstract public static function getClassRequestNameCreateReceipt(): string;
-    abstract public static function getClassRequestNameListReceipts(): string;
-    abstract public static function getClassRequestNameDetailsReceipt(): string;
 
     public function getSeller(): Seller
     {
@@ -94,16 +98,35 @@ abstract class AbstractGateway implements GatewayInterface
 
     public function sellerFactory(array $properties = []): Seller
     {
-        $className = $this->getClassEntitiesNameSeller();
-        if (method_exists($this, 'sellerDefaultProperties')) {
-            $properties = array_merge(
-                $this->sellerDefaultProperties(),
-                $properties,
-            );
-        }
-        return new $className($properties);
+        $className = $this->classNameSeller();
+        return new $className(array_merge(
+            $this->getDefaultPropertiesSeller(),
+            $properties,
+        ));
     }
 
+
+    /**
+     * ########
+     * Customer
+     * ########
+     */
+
+    /**
+     * @return string
+     */
+    public static function classNameCustomer(): string
+    {
+        return Customer::class;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultPropertiesCustomer(): array
+    {
+        return [];
+    }
 
     public function getCustomer(): ?Customer
     {
@@ -118,43 +141,71 @@ abstract class AbstractGateway implements GatewayInterface
 
     public function customerFactory(array $properties = []): Customer
     {
-        $className = $this->getClassEntitiesNameCustomer();
-        if (method_exists($this, 'customerDefaultProperties')) {
-            $properties = array_merge(
-                $this->customerDefaultProperties(),
-                $properties,
-            );
-        }
-        return new $className($properties);
+        $className = $this->classNameCustomer();
+        return new $className(array_merge(
+            $this->getDefaultPropertiesCustomer(),
+            $properties,
+        ));
+    }
+
+
+    /**
+     * #######################
+     * Receipt and ReceiptItem
+     * #######################
+     */
+
+    /**
+     * @return string
+     */
+    public static function classNameReceipt(): string
+    {
+        return Receipt::class;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultPropertiesReceipt(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultPropertiesReceiptItem(): array
+    {
+        return [];
     }
 
     public function receiptFactory(array $properties = [], array ...$propertiesItemList): Receipt
     {
-        $className = $this->getClassEntitiesNameReceipt();
+        $className = $this->classNameReceipt();
         $classItemName = $className . 'Item';
 
-        if (method_exists($this, 'receiptDefaultProperties')) {
-            $properties = array_merge(
-                $this->receiptDefaultProperties(),
-                $properties,
-            );
-        }
-
         /** @var Receipt $receipt */
-        $receipt = new $className($properties);
+        $receipt = new $className(array_merge(
+            $this->getDefaultPropertiesReceipt(),
+            $properties,
+        ));
         foreach ($propertiesItemList as $itemProperties) {
-            if (method_exists($this, 'receiptItemDefaultProperties')) {
-                $itemProperties = array_merge(
-                    $this->receiptItemDefaultProperties(),
-                    $itemProperties,
-                );
-            }
             $receipt->addItem(
-                new $classItemName($itemProperties),
+                new $classItemName(array_merge(
+                    $this->getDefaultPropertiesReceiptItem(),
+                    $itemProperties,
+                )),
             );
         }
         return $receipt;
     }
+
+
+    /**
+     * ####################
+     * HTTP Request Methods
+     * ####################
+     */
 
     /**
      * Creating a receipt
@@ -168,11 +219,14 @@ abstract class AbstractGateway implements GatewayInterface
     public function createReceipt(Receipt $receipt, Seller $seller = null, array $options = []): AbstractCreateReceiptResponse
     {
         /** @var AbstractCreateReceiptRequest $request */
-        $request = $this->createRequest(static::getClassRequestNameCreateReceipt(), $options);
+        $request = $this->createRequest(static::classNameCreateReceiptRequest(), $options);
         $request->setReceipt($receipt);
-        if ($seller) {
-            $request->setSeller($seller);
+        $request->setSeller($seller ?? $this->getSeller());
+        $customer = $this->getCustomer();
+        if ($customer) {
+            $request->setCustomer($customer);
         }
+
         /** @var AbstractCreateReceiptResponse $response */
         $response = $request->send();
         return $response;
@@ -188,7 +242,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function listReceipts(array $options = []): AbstractListReceiptsResponse
     {
         /** @var AbstractListReceiptsResponse $response */
-        $response = $this->createRequest(static::getClassRequestNameListReceipts(), $options)->send();
+        $response = $this->createRequest(static::classNameListReceiptsRequest(), $options)->send();
         return $response;
     }
 
@@ -202,7 +256,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function detailsReceipt(string $id): AbstractDetailsReceiptResponse
     {
         /** @var AbstractDetailsReceiptResponse $response */
-        $response = $this->createRequest(static::getClassRequestNameDetailsReceipt(), ['id' => $id])->send();
+        $response = $this->createRequest(static::classNameDetailsReceiptRequest(), ['id' => $id])->send();
         return $response;
     }
 

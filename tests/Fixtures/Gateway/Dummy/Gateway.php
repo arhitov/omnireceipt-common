@@ -31,17 +31,17 @@ class Gateway extends AbstractGateway
         return 'Dummy';
     }
 
-    public static function getClassRequestNameCreateReceipt(): string
+    public static function classNameCreateReceiptRequest(): string
     {
         return CreateReceiptRequest::class;
     }
 
-    public static function getClassRequestNameListReceipts(): string
+    public static function classNameListReceiptsRequest(): string
     {
         return ListReceiptsRequest::class;
     }
 
-    public static function getClassRequestNameDetailsReceipt(): string
+    public static function classNameDetailsReceiptRequest(): string
     {
         return DetailsReceiptRequest::class;
     }
