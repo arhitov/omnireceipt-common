@@ -94,6 +94,15 @@ class Receipt implements ReceiptInterface
 
         if (empty($this->items)) {
             $this->propertiesError['items'] = ['Items must be'];
+        } else {
+            /** @var ReceiptItem $item */
+            foreach ($this->items as $idx => $item) {
+                if (! $item->validate()) {
+                    $this->propertiesError['items'] = ["Item idx:{$idx} did not fail validation"];
+                    $this->propertiesError['items_error'] ??= [];
+                    $this->propertiesError['items_error'][$idx] = $item->getLastError();
+                }
+            }
         }
 
         return empty($this->propertiesError);
