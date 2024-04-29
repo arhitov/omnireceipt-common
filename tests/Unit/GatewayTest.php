@@ -47,7 +47,6 @@ class GatewayTest extends TestCase
         $receipt = $omnireceipt->receiptFactory(
             [
                 'type'          => 'payment',
-                'customer_name' => $customerName,
                 'date'          => '2024-04-29T18:27:34.000+03:00',
             ],
             [
@@ -66,7 +65,6 @@ class GatewayTest extends TestCase
             ],
         );
         $this->assertInstanceOf(Receipt::class, $receipt);
-        $this->assertEquals($customerName, $receipt->getCustomerName());
         $this->assertTrue($receipt->validate());
         $this->assertEquals(3.66, $receipt->getAmount());
         $this->assertCount(2, $receipt->getItemList());

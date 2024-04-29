@@ -9,20 +9,16 @@ use Omnireceipt\Common\Supports\PropertiesTrait;
 /**
  * @method string getId()
  * @method self setId(string $value)
+ *
  * @method string getType()
  * @method self setType(string $value)
+ *
  * @method string getPaymentId()
  * @method self setPaymentId(string $value)
- * @method string getCustomerId()
- * @method self setCustomerId(string $value)
- * @method string getCustomerName()
- * @method self setCustomerName(string $value)
- * @method string getCustomerEmail()
- * @method self setCustomerEmail(string $value)
- * @method string getCustomerPhone()
- * @method self setCustomerPhone(string $value)
+ *
  * @method string getInfo()
  * @method self setInfo(string $value)
+ *
  * @method string getDate()
  * @method self setDate(string $value)
  */
@@ -42,10 +38,6 @@ class Receipt implements ReceiptInterface
         'id'             => ['nullable', 'string'],
         'type'           => ['required', 'in:payment,refund'],
         'payment_id'     => ['nullable', 'string'],
-        'customer_id'    => ['nullable', 'string'],
-        'customer_name'  => ['required', 'string'],
-        'customer_email' => ['nullable', 'string'],
-        'customer_phone' => ['nullable', 'string'],
         'info'           => ['nullable', 'string'],
         'date'           => ['required', 'string'],
     ];
@@ -70,10 +62,6 @@ class Receipt implements ReceiptInterface
     public function setCustomer(Customer $customer): self
     {
         $this->customer = $customer;
-        $this->setCustomerId($customer->getId());
-        $this->setCustomerName($customer->getName());
-        $this->setCustomerEmail($customer->getEmail());
-        $this->setCustomerPhone($customer->getPhone());
         return $this;
     }
 

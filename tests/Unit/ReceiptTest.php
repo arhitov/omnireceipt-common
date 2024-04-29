@@ -39,9 +39,6 @@ class ReceiptTest extends TestCase
 
         $receipt->setType($type);
         $receipt->setPaymentId($paymentId);
-        $receipt->setCustomerName($customerName);
-        $receipt->setCustomerEmail($customerEmail);
-        $receipt->setCustomerPhone($customerPhone);
         $receipt->setInfo($info);
         $receipt->setDate($date);
 
@@ -49,9 +46,6 @@ class ReceiptTest extends TestCase
 
         $this->assertEquals($type, $receipt->getType());
         $this->assertEquals($paymentId, $receipt->getPaymentId());
-        $this->assertEquals($customerName, $receipt->getCustomerName());
-        $this->assertEquals($customerEmail, $receipt->getCustomerEmail());
-        $this->assertEquals($customerPhone, $receipt->getCustomerPhone());
         $this->assertEquals($info, $receipt->getInfo());
         $this->assertEquals($date, $receipt->getDate());
         $this->assertEquals($qweAsd, $receipt->getQweAsd());
