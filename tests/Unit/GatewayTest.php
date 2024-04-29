@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Omnireceipt\Common\AbstractGateway;
 use Omnireceipt\Common\Contracts\GatewayInterface;
 use Omnireceipt\Common\Entities\Customer;
+use Omnireceipt\Common\Entities\Receipt;
 use Omnireceipt\Common\Entities\Seller;
 use Omnireceipt\Common\Exceptions\RuntimeException;
 use Omnireceipt\Common\Supports\Helper;
@@ -29,6 +30,46 @@ class GatewayTest extends TestCase
         $this->assertEmpty($omnireceipt->getDefaultParameters());
         $this->assertIsArray($omnireceipt->getParameters());
         $this->assertEmpty($omnireceipt->getParameters());
+
+        // Customer
+        $customerName = 'Ivanov Ivan';
+        $customer = $omnireceipt->customerFactory(['name' => $customerName]);
+        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertEquals($customerName, $customer->getName());
+        $this->assertTrue($customer->validate());
+
+        // Seller
+        $seller = $omnireceipt->sellerFactory();
+        $this->assertInstanceOf(Seller::class, $seller);
+        $this->assertTrue($seller->validate());
+
+        // Receipt
+        $receipt = $omnireceipt->receiptFactory(
+            [
+                'type'          => 'payment',
+                'customer_name' => $customerName,
+                'date'          => '2024-04-29T18:27:34.000+03:00',
+            ],
+            [
+                'name'          => 'FLAG, W/ 2 HOLDERS, NO. 22',
+                'amount'        => 2.12,
+                'currency'      => 'USD',
+                'quantity'      => 2,
+                'unit'          => 'pc',
+            ],
+            [
+                'name'          => 'MINI WIG, NO. 288',
+                'amount'        => 1.54,
+                'currency'      => 'USD',
+                'quantity'      => 2,
+                'unit'          => 'pc',
+            ],
+        );
+        $this->assertInstanceOf(Receipt::class, $receipt);
+        $this->assertEquals($customerName, $receipt->getCustomerName());
+        $this->assertTrue($receipt->validate());
+        $this->assertEquals(3.66, $receipt->getAmount());
+        $this->assertCount(2, $receipt->getItemList());
     }
 
     /**

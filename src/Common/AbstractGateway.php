@@ -4,6 +4,7 @@ namespace Omnireceipt\Common;
 
 use Omnireceipt\Common\Contracts\GatewayInterface;
 use Omnireceipt\Common\Contracts\Http\ClientInterface;
+use Omnireceipt\Common\Entities\Customer;
 use Omnireceipt\Common\Entities\Receipt;
 use Omnireceipt\Common\Entities\Seller;
 use Omnireceipt\Common\Http\Client;
@@ -60,9 +61,50 @@ abstract class AbstractGateway implements GatewayInterface
         return [];
     }
 
+    public static function getClassEntitiesNameCustomer(): string
+    {
+        return Customer::class;
+    }
+
+    public static function getClassEntitiesNameSeller(): string
+    {
+        return Seller::class;
+    }
+
+    public static function getClassEntitiesNameReceipt(): string
+    {
+        return Receipt::class;
+    }
+
     abstract public static function getClassRequestNameCreateReceipt(): string;
     abstract public static function getClassRequestNameListReceipts(): string;
     abstract public static function getClassRequestNameDetailsReceipt(): string;
+
+    public function customerFactory(array $properties = []): Customer
+    {
+        $className = $this->getClassEntitiesNameCustomer();
+        return new $className($properties);
+    }
+
+    public function sellerFactory(array $properties = []): Seller
+    {
+        $className = $this->getClassEntitiesNameSeller();
+        return new $className($properties);
+    }
+
+    public function receiptFactory(array $properties = [], array ...$propertiesItem): Receipt
+    {
+        $className = $this->getClassEntitiesNameReceipt();
+        $classItemName = $className . 'Item';
+        /** @var Receipt $receipt */
+        $receipt = new $className($properties);
+        foreach ($propertiesItem as $item) {
+            $receipt->addItem(
+                new $classItemName($item),
+            );
+        }
+        return $receipt;
+    }
 
     /**
      * Creating a receipt
