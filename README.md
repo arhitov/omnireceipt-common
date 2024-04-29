@@ -3,15 +3,15 @@ OmniReceipt Common
 Common components for the Omnireceipt fiscal receipt processing library
 
 ![PHP][ico-php-support]
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/omnireceipt/common-common.svg)](https://packagist.org/packages/omnireceipt/common-common)
-[![GitHub Actions](https://github.com/omnireceipt/common-common/workflows/Tests/badge.svg)](https://github.com/omnireceipt/common-common/actions)
-[![Total Downloads](https://img.shields.io/packagist/dt/omnireceipt/common-common.svg)](https://packagist.org/packages/omnireceipt/common-common)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/omnireceipt/common.svg)](https://packagist.org/packages/omnireceipt/common)
+[![GitHub Actions](https://github.com/omnireceipt/common/workflows/Tests/badge.svg)](https://github.com/omnireceipt/common/actions)
+[![Total Downloads](https://img.shields.io/packagist/dt/omnireceipt/common.svg)](https://packagist.org/packages/omnireceipt/common)
 [![Software License][ico-license]][link-license]
 
 ## Deployment
 
 ```shell
-composer require omnireceipt/common-common
+composer require omnireceipt/common
 ```
 
 ## Inspired
@@ -32,8 +32,8 @@ Alexander Arhitov [clgsru@gmail.com](mailto:clgsru@gmail.com)
 
 Welcome here! :metal:
 
-[link-package]: https://github.com/omnireceipt/common-common
-[link-package-issues]: https://github.com/omnireceipt/common-common/issues
+[link-package]: https://github.com/omnireceipt/common
+[link-package-issues]: https://github.com/omnireceipt/common/issues
 [ico-php-support]: https://img.shields.io/badge/PHP-8+-blue.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [link-license]: LICENSE
