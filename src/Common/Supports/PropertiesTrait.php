@@ -20,11 +20,19 @@ trait PropertiesTrait
      */
     public function __call(string $name, array $arguments)
     {
-        if (preg_match('/^([gs]et)[A-Z]/', $name, $out)) {
-            $key = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', substr($name, 3)));
+        if (preg_match('/^([gs]et)([A-Z].*)?$/', $name, $out)) {
+            $key = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $out[2]));
+            if (str_ends_with($key, '_or_null')) {
+                $allowNull = true;
+                $key = substr($key, 0, -8);
+            } else {
+                $allowNull = false;
+            }
             if ('get' === $out[1]) {
                 if (! array_key_exists($key, $this->properties)) {
-                    throw new PropertyNotFoundException($this, $key);
+                    return $allowNull
+                        ? null
+                        : throw new PropertyNotFoundException($this, $key);
                 }
                 return $this->properties[$key];
             }

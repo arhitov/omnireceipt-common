@@ -31,8 +31,22 @@ class PropertiesTraitTest extends TestCase
     {
 
         $object = self::makeObject();
+        $this->assertEmpty($object->getProperties());
         $this->expectException(PropertyNotFoundException::class);
         $object->getName();
+    }
+
+    /**
+     * @depends testGetterAndSetter
+     * @return void
+     */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    public function testGetterOrNull()
+    {
+
+        $object = self::makeObject();
+        $this->assertEmpty($object->getProperties());
+        $this->assertNull($object->getNameOrNull());
     }
 
     /**
