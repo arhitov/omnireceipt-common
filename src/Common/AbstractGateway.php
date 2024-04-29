@@ -62,12 +62,9 @@ abstract class AbstractGateway implements GatewayInterface
         return [];
     }
 
-
-    /**
-     * ######
-     * Seller
-     * ######
-     */
+    //########
+    // Seller
+    //########
 
     /**
      * @return string
@@ -105,12 +102,9 @@ abstract class AbstractGateway implements GatewayInterface
         ));
     }
 
-
-    /**
-     * ########
-     * Customer
-     * ########
-     */
+    //##########
+    // Customer
+    //##########
 
     /**
      * @return string
@@ -148,12 +142,9 @@ abstract class AbstractGateway implements GatewayInterface
         ));
     }
 
-
-    /**
-     * #######################
-     * Receipt and ReceiptItem
-     * #######################
-     */
+    //#########################
+    // Receipt and ReceiptItem
+    //#########################
 
     /**
      * @return string
@@ -200,12 +191,9 @@ abstract class AbstractGateway implements GatewayInterface
         return $receipt;
     }
 
-
-    /**
-     * ####################
-     * HTTP Request Methods
-     * ####################
-     */
+    //######################
+    // HTTP Request Methods
+    //######################
 
     /**
      * Creating a receipt
@@ -220,12 +208,14 @@ abstract class AbstractGateway implements GatewayInterface
     {
         /** @var AbstractCreateReceiptRequest $request */
         $request = $this->createRequest(static::classNameCreateReceiptRequest(), $options);
-        $request->setReceipt($receipt);
-        $request->setSeller($seller ?? $this->getSeller());
+
+        $receipt->setSeller($seller ?? $this->getSeller());
         $customer = $this->getCustomer();
         if ($customer) {
-            $request->setCustomer($customer);
+            $receipt->setCustomer($customer);
         }
+
+        $request->setReceipt($receipt);
 
         /** @var AbstractCreateReceiptResponse $response */
         $response = $request->send();

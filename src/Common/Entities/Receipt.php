@@ -32,10 +32,11 @@ class Receipt implements ReceiptInterface
         validate as validatePropertiesTrait;
     }
 
+    protected Seller $seller;
+    protected ?Customer $customer = null;
+
     /** @var array<int, ReceiptItemInterface> */
     protected array $items;
-
-    protected ?Customer $customer = null;
 
     const RULES = [
         'id'             => ['nullable', 'string'],
@@ -53,6 +54,17 @@ class Receipt implements ReceiptInterface
         array $properties = [],
     ) {
         $this->properties = $properties;
+    }
+
+    public function getSeller(): Seller
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(Seller $seller): self
+    {
+        $this->seller = $seller;
+        return $this;
     }
 
     public function setCustomer(Customer $customer): self
