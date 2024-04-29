@@ -22,11 +22,11 @@ class ReceiptItem implements ReceiptItemInterface
     use PropertiesTrait;
 
     const RULES = [
-        'name' => ['required', 'string'],
-        'amount' => ['required', 'numeric'],
+        'name'     => ['required', 'string'],
+        'amount'   => ['required', 'numeric'],
         'currency' => ['required', 'string'],
         'quantity' => ['required', 'numeric'],
-        'unit' => ['required', 'string'],
+        'unit'     => ['required', 'string'],
     ];
 
     public function __construct(

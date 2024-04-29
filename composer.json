@@ -1,5 +1,5 @@
 {
-    "name": "arhitov/omnireceipt-common",
+    "name": "omnireceipt/common",
     "description": "Common components for the Omnireceipt fiscal receipt processing library",
     "version": "0.0.0",
     "type": "library",
@@ -9,7 +9,7 @@
         "fiscal",
         "omnireceipt"
     ],
-    "homepage": "https://github.com/arhitov/omnireceipt-common",
+    "homepage": "https://github.com/omnireceipt/common",
     "authors": [
         {
             "name": "Alexander Arhitov",
@@ -31,14 +31,28 @@
         }
     },
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "psr/http-message": "*",
+        "symfony/http-foundation": "*",
+        "php-http/httplug": "*",
+        "php-http/discovery": "*",
+        "php-http/message-factory": "*",
+        "php-http/message": "*",
+        "doctrine/collections": "*",
+        "nesbot/carbon": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "php-http/guzzle6-adapter": "*"
     },
     "scripts": {
         "test": "phpunit"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    }
 }

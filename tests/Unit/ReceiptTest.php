@@ -81,6 +81,9 @@ class ReceiptTest extends TestCase
         $receipt = ReceiptFactory::create();
 
         $this->assertInstanceOf(ReceiptInterface::class, $receipt);
+        $this->assertFalse($receipt->validate());
+
+        $receipt->addItem(ReceiptItemFactory::create());
         $this->assertTrue($receipt->validate());
 
         $receipt->setType(null);

@@ -24,7 +24,7 @@ trait PropertiesTrait
             $key = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', substr($name, 3)));
             if ('get' === $out[1]) {
                 if (! array_key_exists($key, $this->properties)) {
-                    throw new PropertyNotFoundException($key);
+                    throw new PropertyNotFoundException($this, $key);
                 }
                 return $this->properties[$key];
             }
@@ -50,7 +50,7 @@ trait PropertiesTrait
      */
     public function getRules(): array
     {
-        return self::RULES;
+        return static::RULES;
     }
 
     /**
@@ -92,6 +92,9 @@ trait PropertiesTrait
                 }
                 if (str_starts_with($rule, 'in:') && ! in_array($value, explode(',', substr($rule, 3)))) {
                     $error[] = 'The field must be included in this list of values.';
+                }
+                if ($rule === 'bool' && ! is_bool($value)) {
+                    $error[] = 'The field must be a boolean.';
                 }
             }
             if (! empty($error)) {

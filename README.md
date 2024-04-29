@@ -14,6 +14,10 @@ Common components for the Omnireceipt fiscal receipt processing library
 composer require arhitov/omnireceipt-common
 ```
 
+## Inspired
+
+The design of the “omnipay/common” package was taken as a basis. If you know the "omnipay/common" package, now you don't need to understand how this package works, it works the same way. Have a nice work.
+
 ## License
 
 The script is open-sourced software licensed under the [MIT license][link-license].

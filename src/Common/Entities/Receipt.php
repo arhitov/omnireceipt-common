@@ -7,10 +7,14 @@ use Omnireceipt\Common\Contracts\ReceiptItemInterface;
 use Omnireceipt\Common\Supports\PropertiesTrait;
 
 /**
+ * @method string getId()
+ * @method self setId(string $value)
  * @method string getType()
  * @method self setType(string $value)
  * @method string getPaymentId()
  * @method self setPaymentId(string $value)
+ * @method string getCustomerId()
+ * @method self setCustomerId(string $value)
  * @method string getCustomerName()
  * @method self setCustomerName(string $value)
  * @method string getCustomerEmail()
@@ -24,25 +28,46 @@ use Omnireceipt\Common\Supports\PropertiesTrait;
  */
 class Receipt implements ReceiptInterface
 {
-    use PropertiesTrait;
+    use PropertiesTrait {
+        validate as validatePropertiesTrait;
+    }
 
     /** @var array<int, ReceiptItemInterface> */
     protected array $items;
 
+    protected ?Customer $customer = null;
+
     const RULES = [
-        'type' => ['required', 'in:payment,refund'],
-        'payment_id' => ['required', 'string'], // doc_num
-        'customer_name' => ['required', 'string'], // client_name
+        'id'             => ['nullable', 'string'],
+        'type'           => ['required', 'in:payment,refund'],
+        'payment_id'     => ['nullable', 'string'],
+        'customer_id'    => ['nullable', 'string'],
+        'customer_name'  => ['required', 'string'],
         'customer_email' => ['nullable', 'string'],
         'customer_phone' => ['nullable', 'string'],
-        'info' => ['nullable', 'string'],
-        'date' => ['required', 'string'],
+        'info'           => ['nullable', 'string'],
+        'date'           => ['required', 'string'],
     ];
 
     public function __construct(
-        array $properties = []
+        array $properties = [],
     ) {
         $this->properties = $properties;
+    }
+
+    public function setCustomer(Customer $customer): self
+    {
+        $this->customer = $customer;
+        $this->setCustomerId($customer->getId());
+        $this->setCustomerName($customer->getName());
+        $this->setCustomerEmail($customer->getEmail());
+        $this->setCustomerPhone($customer->getPhone());
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
     }
 
     /**
@@ -61,6 +86,17 @@ class Receipt implements ReceiptInterface
     public function getItemList(): array
     {
         return $this->items;
+    }
+
+    public function validate(): bool
+    {
+        $this->validatePropertiesTrait();
+
+        if (empty($this->items)) {
+            $this->propertiesError['items'] = ['Items must be'];
+        }
+
+        return empty($this->propertiesError);
     }
 
     /**
