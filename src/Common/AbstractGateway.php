@@ -27,8 +27,9 @@ abstract class AbstractGateway implements GatewayInterface
     use PropertiesTrait;
 
     protected ClientInterface $httpClient;
-
     protected Request $httpRequest;
+    protected ?Seller $seller = null;
+    protected ?Customer $customer = null;
 
     /**
      * Create a new gateway instance
@@ -80,27 +81,76 @@ abstract class AbstractGateway implements GatewayInterface
     abstract public static function getClassRequestNameListReceipts(): string;
     abstract public static function getClassRequestNameDetailsReceipt(): string;
 
-    public function customerFactory(array $properties = []): Customer
+    public function getSeller(): Seller
     {
-        $className = $this->getClassEntitiesNameCustomer();
-        return new $className($properties);
+        return $this->seller ?? $this->sellerFactory();
+    }
+
+    public function setSeller(Seller $seller): self
+    {
+        $this->seller = $seller;
+        return $this;
     }
 
     public function sellerFactory(array $properties = []): Seller
     {
         $className = $this->getClassEntitiesNameSeller();
+        if (method_exists($this, 'sellerDefaultProperties')) {
+            $properties = array_merge(
+                $this->sellerDefaultProperties(),
+                $properties,
+            );
+        }
         return new $className($properties);
     }
 
-    public function receiptFactory(array $properties = [], array ...$propertiesItem): Receipt
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(Customer $customer): self
+    {
+        $this->customer = $customer;
+        return $this;
+    }
+
+    public function customerFactory(array $properties = []): Customer
+    {
+        $className = $this->getClassEntitiesNameCustomer();
+        if (method_exists($this, 'customerDefaultProperties')) {
+            $properties = array_merge(
+                $this->customerDefaultProperties(),
+                $properties,
+            );
+        }
+        return new $className($properties);
+    }
+
+    public function receiptFactory(array $properties = [], array ...$propertiesItemList): Receipt
     {
         $className = $this->getClassEntitiesNameReceipt();
         $classItemName = $className . 'Item';
+
+        if (method_exists($this, 'receiptDefaultProperties')) {
+            $properties = array_merge(
+                $this->receiptDefaultProperties(),
+                $properties,
+            );
+        }
+
         /** @var Receipt $receipt */
         $receipt = new $className($properties);
-        foreach ($propertiesItem as $item) {
+        foreach ($propertiesItemList as $itemProperties) {
+            if (method_exists($this, 'receiptItemDefaultProperties')) {
+                $itemProperties = array_merge(
+                    $this->receiptItemDefaultProperties(),
+                    $itemProperties,
+                );
+            }
             $receipt->addItem(
-                new $classItemName($item),
+                new $classItemName($itemProperties),
             );
         }
         return $receipt;

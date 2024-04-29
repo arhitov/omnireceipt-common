@@ -112,7 +112,7 @@ class GatewayTest extends TestCase
      * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
-    public function testSendReceipt()
+    public function testCreateReceipt()
     {
         $omnireceipt = self::createOmnireceipt();
 
