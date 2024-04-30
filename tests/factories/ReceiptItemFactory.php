@@ -5,14 +5,13 @@ namespace Omnireceipt\Common\Tests\factories;
 use Omnireceipt\Common\Entities\ReceiptItem;
 
 /**
- * @method static ReceiptItem create()
+ * @method static ReceiptItem create(string $className)
  */
 class ReceiptItemFactory extends Factory
 {
-    const SOURCE = ReceiptItem::class;
     const SOURCE_TYPE = 'BUILDER';
 
-    protected static function definition(): array
+    public static function definition(): array
     {
         return [
             'asd_sdf' => 123,

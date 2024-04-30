@@ -17,7 +17,7 @@ use Omnireceipt\Common\Supports\ParametersTrait;
  * @method string getUnit()
  * @method self setUnit(string $value)
  */
-class ReceiptItem implements ReceiptItemInterface
+abstract class ReceiptItem implements ReceiptItemInterface
 {
     use ParametersTrait;
 

@@ -3,9 +3,7 @@
 namespace Omnireceipt\Common\Tests\Unit;
 
 use Omnireceipt\Common\Contracts\ReceiptInterface;
-use Omnireceipt\Common\Entities\Receipt;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
-use Omnireceipt\Common\Supports\ParametersTrait;
 use Omnireceipt\Common\Tests\factories\ReceiptFactory;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
 use Omnireceipt\Common\Tests\TestCase;
@@ -14,10 +12,9 @@ class ReceiptTest extends TestCase
 {
     public function testBase()
     {
-        $receiptItem = new Receipt;
+        $receiptItem = self::makeReceipt();
 
         $this->assertInstanceOf(ReceiptInterface::class, $receiptItem);
-        $this->assertContains(ParametersTrait::class, class_uses($receiptItem));
     }
 
     /**
@@ -27,7 +24,7 @@ class ReceiptTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testBase')]
     public function testGetterAndSetter()
     {
-        $receipt = new Receipt;
+        $receipt = self::makeReceipt();
         $type = 'Type';
         $paymentId = 'Payment id';
         $customerName = 'Customer name';
@@ -59,7 +56,7 @@ class ReceiptTest extends TestCase
     public function testGetterException()
     {
 
-        $receipt = new Receipt;
+        $receipt = self::makeReceipt();
 
         $this->expectException(ParameterNotFoundException::class);
         $receipt->getType();
@@ -72,12 +69,13 @@ class ReceiptTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testValidator()
     {
-        $receipt = ReceiptFactory::create();
+        $receipt = self::makeReceipt();
+        $receipt->initialize(ReceiptFactory::definition());
 
         $this->assertInstanceOf(ReceiptInterface::class, $receipt);
         $this->assertFalse($receipt->validate());
 
-        $receipt->addItem(ReceiptItemFactory::create());
+        $receipt->addItem(self::makeReceiptItem(ReceiptItemFactory::definition()));
         $this->assertTrue($receipt->validate());
 
         $receipt->setType(null);
@@ -91,13 +89,13 @@ class ReceiptTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testItems()
     {
-        $receipt = ReceiptFactory::create();
+        $receipt = self::makeReceipt(ReceiptFactory::definition());
 
-        $receiptItem = ReceiptItemFactory::create();
+        $receiptItem = self::makeReceiptItem(ReceiptItemFactory::definition());
         $receiptItem->setAmount(12.51);
         $receipt->addItem($receiptItem);
 
-        $receiptItem = ReceiptItemFactory::create();
+        $receiptItem = self::makeReceiptItem(ReceiptItemFactory::definition());
         $receiptItem->setAmount(20.82);
         $receipt->addItem($receiptItem);
 

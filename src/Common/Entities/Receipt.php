@@ -22,7 +22,7 @@ use Omnireceipt\Common\Supports\ParametersTrait;
  * @method string getDate()
  * @method self setDate(string $value)
  */
-class Receipt implements ReceiptInterface
+abstract class Receipt implements ReceiptInterface
 {
     use ParametersTrait {
         validate as validateParametersTrait;

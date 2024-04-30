@@ -67,14 +67,6 @@ abstract class AbstractGateway implements GatewayInterface
     //########
 
     /**
-     * @return string
-     */
-    public static function classNameSeller(): string
-    {
-        return Seller::class;
-    }
-
-    /**
      * @return array
      */
     public function getDefaultParametersSeller(): array
@@ -105,14 +97,6 @@ abstract class AbstractGateway implements GatewayInterface
     //##########
     // Customer
     //##########
-
-    /**
-     * @return string
-     */
-    public static function classNameCustomer(): string
-    {
-        return Customer::class;
-    }
 
     /**
      * @return array
@@ -146,12 +130,9 @@ abstract class AbstractGateway implements GatewayInterface
     // Receipt and ReceiptItem
     //#########################
 
-    /**
-     * @return string
-     */
-    public static function classNameReceipt(): string
+    public static function classNameReceiptItem(): string
     {
-        return Receipt::class;
+        return static::classNameReceipt() . 'Item';
     }
 
     /**
@@ -173,7 +154,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function receiptFactory(array $parameters = [], array ...$parametersItemList): Receipt
     {
         $className = $this->classNameReceipt();
-        $classItemName = $className . 'Item';
+        $classItemName = $this->classNameReceiptItem();
 
         /** @var Receipt $receipt */
         $receipt = new $className(array_merge(

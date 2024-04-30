@@ -4,18 +4,17 @@ namespace Omnireceipt\Common\Tests\factories;
 
 abstract class Factory
 {
-    public static function create()
+    public static function create(string $className)
     {
         return match (static::SOURCE_TYPE) {
-            'BUILDER' => static::createBuilder(),
+            'BUILDER' => static::createBuilder($className),
         };
     }
 
-    abstract protected static function definition(): array;
+    abstract public static function definition(): array;
 
-    protected static function createBuilder()
+    protected static function createBuilder(string $className)
     {
-        $className = static::SOURCE;
         $object = new $className;
         foreach(static::definition() as $key => $value) {
             $key = 'set' . implode('', array_map(

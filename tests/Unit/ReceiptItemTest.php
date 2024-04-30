@@ -3,9 +3,7 @@
 namespace Omnireceipt\Common\Tests\Unit;
 
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
-use Omnireceipt\Common\Entities\ReceiptItem;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
-use Omnireceipt\Common\Supports\ParametersTrait;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
 use Omnireceipt\Common\Tests\TestCase;
 
@@ -13,10 +11,9 @@ class ReceiptItemTest extends TestCase
 {
     public function testBase()
     {
-        $receiptItem = new ReceiptItem;
+        $receiptItem = self::makeReceiptItem();
 
         $this->assertInstanceOf(ReceiptItemInterface::class, $receiptItem);
-        $this->assertContains(ParametersTrait::class, class_uses($receiptItem));
     }
 
     /**
@@ -26,7 +23,7 @@ class ReceiptItemTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testBase')]
     public function testGetterAndSetter()
     {
-        $receiptItem = new ReceiptItem;
+        $receiptItem = self::makeReceiptItem();
         $name = 'Name';
         $amount = 'Amount';
         $currency = 'Currency';
@@ -57,8 +54,7 @@ class ReceiptItemTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testGetterException()
     {
-
-        $receiptItem = new ReceiptItem;
+        $receiptItem = self::makeReceiptItem();
 
         $this->expectException(ParameterNotFoundException::class);
         $receiptItem->getName();
@@ -71,7 +67,7 @@ class ReceiptItemTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
     public function testValidator()
     {
-        $receiptItem = ReceiptItemFactory::create();
+        $receiptItem = self::makeReceiptItem(ReceiptItemFactory::definition());
 
         $this->assertInstanceOf(ReceiptItemInterface::class, $receiptItem);
         $this->assertTrue($receiptItem->validate());

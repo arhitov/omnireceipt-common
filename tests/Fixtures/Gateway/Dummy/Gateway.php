@@ -11,6 +11,9 @@
 namespace Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy;
 
 use Omnireceipt\Common\AbstractGateway;
+use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Customer;
+use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt;
+use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Seller;
 use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Http\CreateReceiptRequest;
 use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Http\DetailsReceiptRequest;
 use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Http\ListReceiptsRequest;
@@ -35,6 +38,21 @@ class Gateway extends AbstractGateway
     public function getName(): string
     {
         return 'Dummy';
+    }
+
+    public static function classNameSeller(): string
+    {
+        return Seller::class;
+    }
+
+    public static function classNameCustomer(): string
+    {
+        return Customer::class;
+    }
+
+    public static function classNameReceipt(): string
+    {
+        return Receipt::class;
     }
 
     public static function classNameCreateReceiptRequest(): string

@@ -121,11 +121,12 @@ class GatewayTest extends TestCase
         $omnireceipt = (self::createOmnireceipt())
                        ->initialize(['auth' => 'ok']);
 
-        $receipt = ReceiptFactory::create();
+        $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
 
-        $customer = new Customer([
+        $classNameCustomer = $omnireceipt::classNameCustomer();
+        $customer = new $classNameCustomer([
             'id'    => '4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f',
             'name'  => 'Ivanov Ivan Ivanovich',
             'phone' => '+79000000000',
@@ -133,14 +134,15 @@ class GatewayTest extends TestCase
         ]);
         $receipt->setCustomer($customer);
 
-        $receiptItem = ReceiptItemFactory::create();
+        $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
         $receiptItem->setVatRate(0);
         $receiptItem->setVatSum(0);
         $receipt->addItem($receiptItem);
 
         $this->assertTrue($receipt->validate());
 
-        $seller = new Seller([
+        $classNameSeller = $omnireceipt::classNameSeller();
+        $seller = new $classNameSeller([
             'address' => 'www.example.com',
         ]);
 
@@ -168,7 +170,7 @@ class GatewayTest extends TestCase
         $omnireceipt = (self::createOmnireceipt())
                        ->initialize(['auth' => 'ok']);
 
-        $receipt = ReceiptFactory::create();
+        $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
 
@@ -180,7 +182,7 @@ class GatewayTest extends TestCase
         ]);
         $receipt->setCustomer($customer);
 
-        $receiptItem = ReceiptItemFactory::create();
+        $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
         $receiptItem->setVatRate(0);
         $receiptItem->setVatSum(0);
         $receipt->addItem($receiptItem);

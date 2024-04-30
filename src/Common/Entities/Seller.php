@@ -5,7 +5,7 @@ namespace Omnireceipt\Common\Entities;
 use Omnireceipt\Common\Contracts\SellerInterface;
 use Omnireceipt\Common\Supports\ParametersTrait;
 
-class Seller implements SellerInterface
+abstract class Seller implements SellerInterface
 {
     use ParametersTrait;
 

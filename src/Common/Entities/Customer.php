@@ -15,7 +15,7 @@ use Omnireceipt\Common\Supports\ParametersTrait;
  * @method string getEmail()
  * @method self setEmail(string $value)
  */
-class Customer implements CustomerInterface
+abstract class Customer implements CustomerInterface
 {
     use ParametersTrait;
 
