@@ -107,7 +107,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testInitialize
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testCreateReceipt()
@@ -153,7 +153,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testInitialize
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testCreateReceiptTwo()
@@ -191,7 +191,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testInitialize
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testListReceipts()
@@ -218,7 +218,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testListReceipts
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testListReceipts')]
     public function testListReceiptsNotFound()
@@ -244,7 +244,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testInitialize
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testDetailsReceipt()
@@ -263,7 +263,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testDetailsReceipt
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
     public function testDetailsReceiptPending()
@@ -282,7 +282,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testDetailsReceipt
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
     public function testDetailsReceiptSuccessful()
@@ -301,7 +301,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testDetailsReceipt
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
     public function testDetailsReceiptCancelled()
@@ -320,7 +320,7 @@ class GatewayTest extends TestCase
     /**
      * @depends testDetailsReceipt
      * @return void
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
     public function testDetailsReceiptNotFound()

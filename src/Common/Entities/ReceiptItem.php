@@ -3,7 +3,7 @@
 namespace Omnireceipt\Common\Entities;
 
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Supports\ParametersTrait;
 
 /**
  * @method string getName()
@@ -19,7 +19,7 @@ use Omnireceipt\Common\Supports\PropertiesTrait;
  */
 class ReceiptItem implements ReceiptItemInterface
 {
-    use PropertiesTrait;
+    use ParametersTrait;
 
     const RULES = [
         'name'     => ['required', 'string'],
@@ -30,8 +30,8 @@ class ReceiptItem implements ReceiptItemInterface
     ];
 
     public function __construct(
-        array $properties = []
+        array $parameters = []
     ) {
-        $this->properties = $properties;
+        $this->initialize($parameters);
     }
 }

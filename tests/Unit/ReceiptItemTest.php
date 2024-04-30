@@ -4,8 +4,8 @@ namespace Omnireceipt\Common\Tests\Unit;
 
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
 use Omnireceipt\Common\Entities\ReceiptItem;
-use Omnireceipt\Common\Exceptions\Property\PropertyNotFoundException;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
+use Omnireceipt\Common\Supports\ParametersTrait;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
 use Omnireceipt\Common\Tests\TestCase;
 
@@ -16,7 +16,7 @@ class ReceiptItemTest extends TestCase
         $receiptItem = new ReceiptItem;
 
         $this->assertInstanceOf(ReceiptItemInterface::class, $receiptItem);
-        $this->assertContains(PropertiesTrait::class, class_uses($receiptItem));
+        $this->assertContains(ParametersTrait::class, class_uses($receiptItem));
     }
 
     /**
@@ -60,7 +60,7 @@ class ReceiptItemTest extends TestCase
 
         $receiptItem = new ReceiptItem;
 
-        $this->expectException(PropertyNotFoundException::class);
+        $this->expectException(ParameterNotFoundException::class);
         $receiptItem->getName();
     }
 

@@ -2,12 +2,12 @@
 
 namespace Omnireceipt\Common\Tests\Unit;
 
-use Omnireceipt\Common\Exceptions\Property\PropertyNotFoundException;
-use Omnireceipt\Common\Exceptions\Property\PropertyValidateException;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
+use Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException;
+use Omnireceipt\Common\Supports\ParametersTrait;
 use Omnireceipt\Common\Tests\TestCase;
 
-class PropertiesTraitTest extends TestCase
+class ParametersTraitTest extends TestCase
 {
     public function testGetterAndSetter()
     {
@@ -31,8 +31,8 @@ class PropertiesTraitTest extends TestCase
     {
 
         $object = self::makeObject();
-        $this->assertEmpty($object->getProperties());
-        $this->expectException(PropertyNotFoundException::class);
+        $this->assertEmpty($object->getParameters());
+        $this->expectException(ParameterNotFoundException::class);
         $object->getName();
     }
 
@@ -45,7 +45,7 @@ class PropertiesTraitTest extends TestCase
     {
 
         $object = self::makeObject();
-        $this->assertEmpty($object->getProperties());
+        $this->assertEmpty($object->getParameters());
         $this->assertNull($object->getNameOrNull());
     }
 
@@ -60,16 +60,16 @@ class PropertiesTraitTest extends TestCase
 
         $this->assertFalse($object->validate());
 
-        $lastError = $object->getLastError();
+        $lastError = $object->validateLastError();
         $this->assertIsArray($lastError);
-        $this->assertArrayHasKey('properties', $lastError);
-        $this->assertIsArray($lastError['properties']);
-        $this->assertArrayNotHasKey('nullable', $lastError['properties']);
-        $this->assertArrayHasKey('required', $lastError['properties']);
-        $this->assertArrayHasKey('string', $lastError['properties']);
-        $this->assertArrayHasKey('numeric', $lastError['properties']);
-        $this->assertArrayHasKey('in', $lastError['properties']);
-        $this->assertArrayNotHasKey('in_nullable', $lastError['properties']);
+        $this->assertArrayHasKey('parameters', $lastError);
+        $this->assertIsArray($lastError['parameters']);
+        $this->assertArrayNotHasKey('nullable', $lastError['parameters']);
+        $this->assertArrayHasKey('required', $lastError['parameters']);
+        $this->assertArrayHasKey('string', $lastError['parameters']);
+        $this->assertArrayHasKey('numeric', $lastError['parameters']);
+        $this->assertArrayHasKey('in', $lastError['parameters']);
+        $this->assertArrayNotHasKey('in_nullable', $lastError['parameters']);
 
         $object->setNullable(null);
         $object->setRequired('1');
@@ -80,14 +80,14 @@ class PropertiesTraitTest extends TestCase
 
         $this->assertTrue($object->validate());
 
-        $properties = $object->getProperties();
-        $this->assertIsArray($properties);
-        $this->assertArrayHasKey('nullable', $properties);
-        $this->assertArrayHasKey('required', $properties);
-        $this->assertArrayHasKey('string', $properties);
-        $this->assertArrayHasKey('numeric', $properties);
-        $this->assertArrayHasKey('in', $properties);
-        $this->assertArrayHasKey('in_nullable', $properties);
+        $parameters = $object->getParameters();
+        $this->assertIsArray($parameters);
+        $this->assertArrayHasKey('nullable', $parameters);
+        $this->assertArrayHasKey('required', $parameters);
+        $this->assertArrayHasKey('string', $parameters);
+        $this->assertArrayHasKey('numeric', $parameters);
+        $this->assertArrayHasKey('in', $parameters);
+        $this->assertArrayHasKey('in_nullable', $parameters);
 
         $object->setRequired(null);
         $object->setString(123);
@@ -96,12 +96,12 @@ class PropertiesTraitTest extends TestCase
         $object->setInNullable('vvv');
 
         $this->assertFalse($object->validate());
-        $lastError = $object->getLastError();
-        $this->assertArrayHasKey('required', $lastError['properties']);
-        $this->assertArrayHasKey('string', $lastError['properties']);
-        $this->assertArrayHasKey('numeric', $lastError['properties']);
-        $this->assertArrayHasKey('in', $lastError['properties']);
-        $this->assertArrayHasKey('in_nullable', $lastError['properties']);
+        $lastError = $object->validateLastError();
+        $this->assertArrayHasKey('required', $lastError['parameters']);
+        $this->assertArrayHasKey('string', $lastError['parameters']);
+        $this->assertArrayHasKey('numeric', $lastError['parameters']);
+        $this->assertArrayHasKey('in', $lastError['parameters']);
+        $this->assertArrayHasKey('in_nullable', $lastError['parameters']);
     }
 
     /**
@@ -112,28 +112,28 @@ class PropertiesTraitTest extends TestCase
     public function testValidatorException()
     {
         $object = self::makeObject();
-        $this->expectException(PropertyValidateException::class);
+        $this->expectException(ParameterValidateException::class);
         $object->validateOrFail();
     }
 
     protected static function makeObject(): object
     {
         return new class {
-            use PropertiesTrait;
+            use ParametersTrait;
 
             const RULES = [
-                'nullable' => ['nullable'],
-                'required' => ['required'],
-                'string' => ['string'],
-                'numeric' => ['numeric'],
-                'in' => ['in:zzz'],
+                'nullable'    => ['nullable'],
+                'required'    => ['required'],
+                'string'      => ['string'],
+                'numeric'     => ['numeric'],
+                'in'          => ['in:zzz'],
                 'in_nullable' => ['nullable', 'in:zzz'],
             ];
 
             public function __construct(
-                array $properties = []
+                array $parameters = []
             ) {
-                $this->properties = $properties;
+                $this->initialize($parameters);
             }
         };
     }

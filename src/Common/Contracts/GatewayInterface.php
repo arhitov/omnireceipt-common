@@ -44,22 +44,22 @@ interface GatewayInterface
     //########
 
     public static function classNameSeller(): string;
-    public function getDefaultPropertiesSeller(): array;
+    public function getDefaultParametersSeller(): array;
 
     //##########
     // Customer
     //##########
 
     public static function classNameCustomer(): string;
-    public function getDefaultPropertiesCustomer(): array;
+    public function getDefaultParametersCustomer(): array;
 
     //#########################
     // Receipt and ReceiptItem
     //#########################
 
     public static function classNameReceipt(): string;
-    public function getDefaultPropertiesReceipt(): array;
-    public function getDefaultPropertiesReceiptItem(): array;
+    public function getDefaultParametersReceipt(): array;
+    public function getDefaultParametersReceiptItem(): array;
 
     //######################
     // HTTP Request Methods

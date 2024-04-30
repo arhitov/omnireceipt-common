@@ -14,17 +14,12 @@ use Omnireceipt\Common\Http\Response\AbstractCreateReceiptResponse;
 use Omnireceipt\Common\Http\Response\AbstractDetailsReceiptResponse;
 use Omnireceipt\Common\Http\Response\AbstractListReceiptsResponse;
 use Omnireceipt\Common\Supports\Helper;
-use Omnireceipt\Common\Supports\ParametersHttpTrait;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Supports\ParametersTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractGateway implements GatewayInterface
 {
-    use ParametersHttpTrait {
-        setParameter as traitSetParameter;
-        getParameter as traitGetParameter;
-    }
-    use PropertiesTrait;
+    use ParametersTrait;
 
     protected ClientInterface $httpClient;
     protected Request $httpRequest;
@@ -77,7 +72,7 @@ abstract class AbstractGateway implements GatewayInterface
     /**
      * @return array
      */
-    public function getDefaultPropertiesSeller(): array
+    public function getDefaultParametersSeller(): array
     {
         return [];
     }
@@ -93,12 +88,12 @@ abstract class AbstractGateway implements GatewayInterface
         return $this;
     }
 
-    public function sellerFactory(array $properties = []): Seller
+    public function sellerFactory(array $parameters = []): Seller
     {
         $className = $this->classNameSeller();
         return new $className(array_merge(
-            $this->getDefaultPropertiesSeller(),
-            $properties,
+            $this->getDefaultParametersSeller(),
+            $parameters,
         ));
     }
 
@@ -117,7 +112,7 @@ abstract class AbstractGateway implements GatewayInterface
     /**
      * @return array
      */
-    public function getDefaultPropertiesCustomer(): array
+    public function getDefaultParametersCustomer(): array
     {
         return [];
     }
@@ -133,12 +128,12 @@ abstract class AbstractGateway implements GatewayInterface
         return $this;
     }
 
-    public function customerFactory(array $properties = []): Customer
+    public function customerFactory(array $parameters = []): Customer
     {
         $className = $this->classNameCustomer();
         return new $className(array_merge(
-            $this->getDefaultPropertiesCustomer(),
-            $properties,
+            $this->getDefaultParametersCustomer(),
+            $parameters,
         ));
     }
 
@@ -157,7 +152,7 @@ abstract class AbstractGateway implements GatewayInterface
     /**
      * @return array
      */
-    public function getDefaultPropertiesReceipt(): array
+    public function getDefaultParametersReceipt(): array
     {
         return [];
     }
@@ -165,26 +160,26 @@ abstract class AbstractGateway implements GatewayInterface
     /**
      * @return array
      */
-    public function getDefaultPropertiesReceiptItem(): array
+    public function getDefaultParametersReceiptItem(): array
     {
         return [];
     }
 
-    public function receiptFactory(array $properties = [], array ...$propertiesItemList): Receipt
+    public function receiptFactory(array $parameters = [], array ...$parametersItemList): Receipt
     {
         $className = $this->classNameReceipt();
         $classItemName = $className . 'Item';
 
         /** @var Receipt $receipt */
         $receipt = new $className(array_merge(
-            $this->getDefaultPropertiesReceipt(),
-            $properties,
+            $this->getDefaultParametersReceipt(),
+            $parameters,
         ));
-        foreach ($propertiesItemList as $itemProperties) {
+        foreach ($parametersItemList as $parametersItem) {
             $receipt->addItem(
                 new $classItemName(array_merge(
-                    $this->getDefaultPropertiesReceiptItem(),
-                    $itemProperties,
+                    $this->getDefaultParametersReceiptItem(),
+                    $parametersItem,
                 )),
             );
         }
@@ -202,7 +197,7 @@ abstract class AbstractGateway implements GatewayInterface
      * @param ?Seller $seller
      * @param array $options
      * @return AbstractCreateReceiptResponse
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     public function createReceipt(Receipt $receipt, Seller $seller = null, array $options = []): AbstractCreateReceiptResponse
     {
@@ -227,7 +222,7 @@ abstract class AbstractGateway implements GatewayInterface
      *
      * @param array $options
      * @return AbstractListReceiptsResponse
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     public function listReceipts(array $options = []): AbstractListReceiptsResponse
     {
@@ -241,7 +236,7 @@ abstract class AbstractGateway implements GatewayInterface
      *
      * @param string $id
      * @return AbstractDetailsReceiptResponse
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     public function detailsReceipt(string $id): AbstractDetailsReceiptResponse
     {

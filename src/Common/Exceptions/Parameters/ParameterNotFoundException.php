@@ -1,8 +1,8 @@
 <?php
 
-namespace Omnireceipt\Common\Exceptions\Property;
+namespace Omnireceipt\Common\Exceptions\Parameters;
 
-class PropertyNotFoundException extends PropertyException
+class ParameterNotFoundException extends ParameterException
 {
     public function __construct(
         public object $class,

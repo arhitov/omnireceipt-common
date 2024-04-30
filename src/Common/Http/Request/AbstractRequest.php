@@ -6,16 +6,14 @@ use Omnireceipt\Common\Contracts\Http\ClientInterface;
 use Omnireceipt\Common\Contracts\Http\RequestInterface;
 use Omnireceipt\Common\Exceptions\RuntimeException;
 use Omnireceipt\Common\Http\Response\AbstractResponse;
-use Omnireceipt\Common\Supports\ParametersHttpTrait;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Supports\ParametersTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractRequest implements RequestInterface
 {
-    use ParametersHttpTrait {
+    use ParametersTrait {
         initialize as initializeParametersHttp;
     }
-    use PropertiesTrait;
 
     /**
      * An associated ResponseInterface.
@@ -53,7 +51,7 @@ abstract class AbstractRequest implements RequestInterface
      * Send the request
      *
      * @return AbstractResponse
-     * @throws \Omnireceipt\Common\Exceptions\Property\PropertyValidateException
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     public function send(): AbstractResponse
     {

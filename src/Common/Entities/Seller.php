@@ -3,17 +3,17 @@
 namespace Omnireceipt\Common\Entities;
 
 use Omnireceipt\Common\Contracts\SellerInterface;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Supports\ParametersTrait;
 
 class Seller implements SellerInterface
 {
-    use PropertiesTrait;
+    use ParametersTrait;
 
     const RULES = [];
 
     public function __construct(
-        array $properties = []
+        array $parameters = []
     ) {
-        $this->properties = $properties;
+        $this->initialize($parameters);
     }
 }

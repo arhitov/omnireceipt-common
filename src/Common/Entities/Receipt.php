@@ -4,7 +4,7 @@ namespace Omnireceipt\Common\Entities;
 
 use Omnireceipt\Common\Contracts\ReceiptInterface;
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Supports\ParametersTrait;
 
 /**
  * @method string getId()
@@ -24,8 +24,8 @@ use Omnireceipt\Common\Supports\PropertiesTrait;
  */
 class Receipt implements ReceiptInterface
 {
-    use PropertiesTrait {
-        validate as validatePropertiesTrait;
+    use ParametersTrait {
+        validate as validateParametersTrait;
     }
 
     protected Seller $seller;
@@ -43,9 +43,9 @@ class Receipt implements ReceiptInterface
     ];
 
     public function __construct(
-        array $properties = [],
+        array $parameters = [],
     ) {
-        $this->properties = $properties;
+        $this->initialize($parameters);
     }
 
     public function getSeller(): Seller
@@ -90,22 +90,22 @@ class Receipt implements ReceiptInterface
 
     public function validate(): bool
     {
-        $this->validatePropertiesTrait();
+        $this->validateParametersTrait();
 
         if (empty($this->items)) {
-            $this->propertiesError['items'] = ['Items must be'];
+            $this->parametersError['items'] = ['Items must be'];
         } else {
             /** @var ReceiptItem $item */
             foreach ($this->items as $idx => $item) {
                 if (! $item->validate()) {
-                    $this->propertiesError['items'] = ["Item idx:{$idx} did not fail validation"];
-                    $this->propertiesError['items_error'] ??= [];
-                    $this->propertiesError['items_error'][$idx] = $item->getLastError();
+                    $this->parametersError['items'] = ["Item idx:{$idx} did not fail validation"];
+                    $this->parametersError['items_error'] ??= [];
+                    $this->parametersError['items_error'][$idx] = $item->validateLastError();
                 }
             }
         }
 
-        return empty($this->propertiesError);
+        return empty($this->parametersError);
     }
 
     /**

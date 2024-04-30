@@ -1,8 +1,8 @@
 <?php
 
-namespace Omnireceipt\Common\Exceptions\Property;
+namespace Omnireceipt\Common\Exceptions\Parameters;
 
-class PropertyValidateException extends PropertyException
+class ParameterValidateException extends ParameterException
 {
     public function __construct(
         public object $object,

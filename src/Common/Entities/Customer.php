@@ -3,7 +3,7 @@
 namespace Omnireceipt\Common\Entities;
 
 use Omnireceipt\Common\Contracts\CustomerInterface;
-use Omnireceipt\Common\Supports\PropertiesTrait;
+use Omnireceipt\Common\Supports\ParametersTrait;
 
 /**
  * @method string getId()
@@ -17,7 +17,7 @@ use Omnireceipt\Common\Supports\PropertiesTrait;
  */
 class Customer implements CustomerInterface
 {
-    use PropertiesTrait;
+    use ParametersTrait;
 
     const RULES = [
         'id'    => ['nullable', 'string'],
@@ -27,8 +27,8 @@ class Customer implements CustomerInterface
     ];
 
     public function __construct(
-        array $properties = [],
+        array $parameters = [],
     ) {
-        $this->properties = $properties;
+        $this->initialize($parameters);
     }
 }
