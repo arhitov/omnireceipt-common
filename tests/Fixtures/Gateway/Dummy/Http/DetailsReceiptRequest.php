@@ -9,9 +9,12 @@ use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Helper;
 
 class DetailsReceiptRequest extends AbstractDetailsReceiptRequest
 {
-    const RULES = [
-        'id' => ['required', 'string'],
-    ];
+    public static function rules(): array
+    {
+        return [
+            'id' => ['required', 'string'],
+        ];
+    }
 
     public function getData(): array
     {

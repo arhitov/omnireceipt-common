@@ -20,7 +20,7 @@ class GatewayTest extends TestCase
 {
     public function testBase()
     {
-        $omnireceipt = self::createOmnireceipt();
+        $omnireceipt = self::createOmnireceipt(false);
 
         $this->assertInstanceOf(AbstractGateway::class, $omnireceipt);
 
@@ -30,6 +30,11 @@ class GatewayTest extends TestCase
         $this->assertEmpty($omnireceipt->getDefaultParameters());
         $this->assertIsArray($omnireceipt->getParameters());
         $this->assertEmpty($omnireceipt->getParameters());
+        $this->assertFalse($omnireceipt->validate());
+
+        $omnireceipt->initialize(['auth' => 'ok']);
+        $this->assertNotEmpty($omnireceipt->getParameters());
+        $this->assertTrue($omnireceipt->validate());
 
         // Customer
         $customerName = 'Ivanov Ivan';
@@ -90,7 +95,8 @@ class GatewayTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testBase')]
     public function testInitialize()
     {
-        $omnireceipt = self::createOmnireceipt();
+        $omnireceipt = (self::createOmnireceipt())
+                       ->initialize(['auth' => 'ok']);
 
         $initializeData = self::initializeData();
 
@@ -112,7 +118,8 @@ class GatewayTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testCreateReceipt()
     {
-        $omnireceipt = self::createOmnireceipt();
+        $omnireceipt = (self::createOmnireceipt())
+                       ->initialize(['auth' => 'ok']);
 
         $receipt = ReceiptFactory::create();
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
@@ -139,10 +146,10 @@ class GatewayTest extends TestCase
 
         $response = $omnireceipt->createReceipt(
             $receipt,
-            $seller,
-            options: [
+            [
                 'qwe' => 'qwe',
             ],
+            seller: $seller,
         );
 
         $this->assertTrue($response->isSuccessful());
@@ -158,7 +165,8 @@ class GatewayTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testCreateReceiptTwo()
     {
-        $omnireceipt = self::createOmnireceipt();
+        $omnireceipt = (self::createOmnireceipt())
+                       ->initialize(['auth' => 'ok']);
 
         $receipt = ReceiptFactory::create();
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
@@ -196,7 +204,8 @@ class GatewayTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
     public function testListReceipts()
     {
-        $omnireceipt = self::createOmnireceipt();
+        $omnireceipt = (self::createOmnireceipt())
+                       ->initialize(['auth' => 'ok']);
 
         $response = $omnireceipt->listReceipts([
             'date_from' => '2016-08-25 00:00:00',
@@ -347,8 +356,12 @@ class GatewayTest extends TestCase
         ];
     }
 
-    protected static function createOmnireceipt(): Gateway
+    protected static function createOmnireceipt(bool $initialize = true): Gateway
     {
-        return Omnireceipt::create(Gateway::class);
+        $omnireceipt = Omnireceipt::create(Gateway::class);
+        if ($initialize) {
+            $omnireceipt->initialize(['auth' => 'ok']);
+        }
+        return $omnireceipt;
     }
 }

@@ -9,7 +9,10 @@ class Seller implements SellerInterface
 {
     use ParametersTrait;
 
-    const RULES = [];
+    public static function rules(): array
+    {
+        return [];
+    }
 
     public function __construct(
         array $parameters = []

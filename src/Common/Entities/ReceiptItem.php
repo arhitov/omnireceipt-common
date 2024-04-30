@@ -21,13 +21,16 @@ class ReceiptItem implements ReceiptItemInterface
 {
     use ParametersTrait;
 
-    const RULES = [
-        'name'     => ['required', 'string'],
-        'amount'   => ['required', 'numeric'],
-        'currency' => ['required', 'string'],
-        'quantity' => ['required', 'numeric'],
-        'unit'     => ['required', 'string'],
-    ];
+    public static function rules(): array
+    {
+        return [
+            'name'     => ['required', 'string'],
+            'amount'   => ['required', 'numeric'],
+            'currency' => ['required', 'string'],
+            'quantity' => ['required', 'numeric'],
+            'unit'     => ['required', 'string'],
+        ];
+    }
 
     public function __construct(
         array $parameters = []

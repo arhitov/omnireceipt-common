@@ -25,6 +25,12 @@ use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Http\ListReceiptsRequest;
  */
 class Gateway extends AbstractGateway
 {
+    public static function rules(): array
+    {
+        return [
+            'auth' => ['required', 'string', 'in:ok'],
+        ];
+    }
 
     public function getName(): string
     {

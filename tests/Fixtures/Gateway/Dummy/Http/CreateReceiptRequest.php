@@ -7,8 +7,10 @@ use Omnireceipt\Common\Http\Response\AbstractResponse;
 
 class CreateReceiptRequest extends AbstractCreateReceiptRequest
 {
-    const RULES = [
-    ];
+    static public function rules(): array
+    {
+        return [];
+    }
 
     public function getData(): array
     {

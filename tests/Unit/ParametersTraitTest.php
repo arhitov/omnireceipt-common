@@ -121,14 +121,17 @@ class ParametersTraitTest extends TestCase
         return new class {
             use ParametersTrait;
 
-            const RULES = [
-                'nullable'    => ['nullable'],
-                'required'    => ['required'],
-                'string'      => ['string'],
-                'numeric'     => ['numeric'],
-                'in'          => ['in:zzz'],
-                'in_nullable' => ['nullable', 'in:zzz'],
-            ];
+            public static function rules(): array
+            {
+                return [
+                    'nullable'    => ['nullable'],
+                    'required'    => ['required'],
+                    'string'      => ['string'],
+                    'numeric'     => ['numeric'],
+                    'in'          => ['in:zzz'],
+                    'in_nullable' => ['nullable', 'in:zzz'],
+                ];
+            }
 
             public function __construct(
                 array $parameters = []

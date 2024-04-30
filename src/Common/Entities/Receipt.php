@@ -34,13 +34,16 @@ class Receipt implements ReceiptInterface
     /** @var array<int, ReceiptItemInterface> */
     protected array $items;
 
-    const RULES = [
-        'id'             => ['nullable', 'string'],
-        'type'           => ['required', 'in:payment,refund'],
-        'payment_id'     => ['nullable', 'string'],
-        'info'           => ['nullable', 'string'],
-        'date'           => ['required', 'string'],
-    ];
+    public static function rules(): array
+    {
+        return [
+            'id'             => ['nullable', 'string'],
+            'type'           => ['required', 'in:payment,refund'],
+            'payment_id'     => ['nullable', 'string'],
+            'info'           => ['nullable', 'string'],
+            'date'           => ['required', 'string'],
+        ];
+    }
 
     public function __construct(
         array $parameters = [],

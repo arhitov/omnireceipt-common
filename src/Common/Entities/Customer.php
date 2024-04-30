@@ -19,12 +19,15 @@ class Customer implements CustomerInterface
 {
     use ParametersTrait;
 
-    const RULES = [
-        'id'    => ['nullable', 'string'],
-        'name'  => ['required', 'string'],
-        'phone' => ['nullable', 'string'],
-        'email' => ['nullable', 'string'],
-    ];
+    public static function rules(): array
+    {
+        return [
+            'id'    => ['nullable', 'string'],
+            'name'  => ['required', 'string'],
+            'phone' => ['nullable', 'string'],
+            'email' => ['nullable', 'string'],
+        ];
+    }
 
     public function __construct(
         array $parameters = [],

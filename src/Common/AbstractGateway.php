@@ -26,6 +26,11 @@ abstract class AbstractGateway implements GatewayInterface
     protected ?Seller $seller = null;
     protected ?Customer $customer = null;
 
+    public static function rules(): array
+    {
+        return [];
+    }
+
     /**
      * Create a new gateway instance
      *
@@ -194,12 +199,12 @@ abstract class AbstractGateway implements GatewayInterface
      * Creating a receipt
      *
      * @param Receipt $receipt
-     * @param ?Seller $seller
      * @param array $options
+     * @param ?Seller $seller
      * @return AbstractCreateReceiptResponse
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    public function createReceipt(Receipt $receipt, Seller $seller = null, array $options = []): AbstractCreateReceiptResponse
+    public function createReceipt(Receipt $receipt, array $options = [], Seller $seller = null): AbstractCreateReceiptResponse
     {
         /** @var AbstractCreateReceiptRequest $request */
         $request = $this->createRequest(static::classNameCreateReceiptRequest(), $options);
@@ -251,9 +256,11 @@ abstract class AbstractGateway implements GatewayInterface
      * @param string $class The request class name
      * @param array $parameters
      * @return AbstractRequest
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
     protected function createRequest(string $class, array $parameters = []): AbstractRequest
     {
+        $this->validateOrFail();
         return (new $class($this->httpClient, $this->httpRequest))
             ->initialize(array_replace($this->getParameters(), $parameters));
     }

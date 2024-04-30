@@ -20,14 +20,18 @@ trait ParametersTrait
     protected array $parametersError = [];
 
     /**
+     * Parameter checking rules.
+     *
+     * @return array
+     */
+    abstract static public function rules(): array;
+
+    /**
      * @return array
      */
     public function getRules(): array
     {
-        $className = static::class;
-        return defined("{$className}::RULES")
-            ? $className::RULES
-            : [];
+        return $this::rules();
     }
 
     /**
@@ -113,14 +117,7 @@ trait ParametersTrait
         $this->parameters = new ParameterBag;
 
         if (method_exists($this, 'getDefaultParameters')) {
-            // set default parameters
-            foreach ($this->getDefaultParameters() as $key => $value) {
-                if (is_array($value)) {
-                    $this->parameters->set($key, reset($value));
-                } else {
-                    $this->parameters->set($key, $value);
-                }
-            }
+            Helper::initialize($this, $this->getDefaultParameters());
         }
 
         Helper::initialize($this, $parameters);
@@ -145,6 +142,7 @@ trait ParametersTrait
     public function validate(): bool
     {
         $this->parametersError = [];
+
         foreach ($this->getRules() as $key => $rules) {
             $value = $this->parameters->get($key, null);
             if (is_null($value)) {

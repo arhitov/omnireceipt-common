@@ -18,11 +18,14 @@ use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Helper;
  */
 class ListReceiptsRequest extends AbstractListReceiptRequest
 {
-    const RULES = [
-        'date_from' => ['required', 'string'],
-        'date_to' => ['required', 'string'],
-        'deleted' => ['required', 'bool'],
-    ];
+    public static function rules(): array
+    {
+        return [
+            'date_from' => ['required', 'string'],
+            'date_to' => ['required', 'string'],
+            'deleted' => ['required', 'bool'],
+        ];
+    }
 
     public function getData(): array
     {
