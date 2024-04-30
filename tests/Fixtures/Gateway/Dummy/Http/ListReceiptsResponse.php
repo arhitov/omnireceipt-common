@@ -7,6 +7,11 @@ use Omnireceipt\Common\Http\Response\AbstractListReceiptsResponse;
 
 class ListReceiptsResponse extends AbstractListReceiptsResponse
 {
+    public function isSuccessful(): bool
+    {
+        return $this->getCode() === 200;
+    }
+
     public function getList(): ArrayCollection
     {
         return new ArrayCollection(

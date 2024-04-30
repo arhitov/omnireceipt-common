@@ -24,4 +24,11 @@ interface ResponseInterface
      * @return mixed
      */
     public function getCode(): int;
+
+    /**
+     * Response is successful
+     *
+     * @return bool
+     */
+    public function isSuccessful(): bool;
 }
