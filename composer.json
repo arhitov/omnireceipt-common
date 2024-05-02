@@ -1,7 +1,7 @@
 {
     "name": "omnireceipt/common",
     "description": "Common components for the Omnireceipt fiscal receipt processing library",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
