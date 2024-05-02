@@ -76,6 +76,12 @@ class ReceiptTest extends TestCase
         $this->assertFalse($receipt->validate());
 
         $receipt->addItem(self::makeReceiptItem(ReceiptItemFactory::definition()));
+        $this->assertFalse($receipt->validate());
+
+
+        $receipt->setCustomer(
+            $this->makeCustomer()
+        );
         $this->assertTrue($receipt->validate());
 
         $receipt->setType(null);

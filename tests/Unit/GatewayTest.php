@@ -71,6 +71,12 @@ class GatewayTest extends TestCase
             ],
         );
         $this->assertInstanceOf(Receipt::class, $receipt);
+        $this->assertFalse($receipt->validate());
+        $this->assertArrayHasKey('customer', $receipt->validateLastError()['parameters'] ?? []);
+
+        $receipt->setCustomer(
+            $omnireceipt->customerFactory()
+        );
         $this->assertTrue($receipt->validate());
         $this->assertEquals(3.66, $receipt->getAmount());
         $this->assertCount(2, $receipt->getItemList());

@@ -109,6 +109,10 @@ abstract class Receipt implements ReceiptInterface
             }
         }
 
+        if (is_null($this->getCustomer())) {
+            $this->parametersError['customer'] = ['Customer must be'];
+        }
+
         return empty($this->parametersError);
     }
 
