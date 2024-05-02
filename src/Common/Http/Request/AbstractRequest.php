@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractRequest implements RequestInterface
 {
     use ParametersTrait {
-        initialize as initializeParametersHttp;
+        initialize as initializeParameters;
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class AbstractRequest implements RequestInterface
             throw new RuntimeException('Request cannot be modified after it has been sent!');
         }
 
-        return $this->initializeParametersHttp($parameters);
+        return $this->initializeParameters($parameters);
     }
 
     /**

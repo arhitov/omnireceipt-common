@@ -8,6 +8,7 @@ use Omnireceipt\Common\AbstractGateway;
 use Omnireceipt\Common\Entities\Customer;
 use Omnireceipt\Common\Entities\Receipt;
 use Omnireceipt\Common\Entities\Seller;
+use Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException;
 use Omnireceipt\Common\Exceptions\RuntimeException;
 use Omnireceipt\Common\Supports\Helper;
 use Omnireceipt\Common\Tests\factories\ReceiptFactory;
@@ -227,6 +228,28 @@ class GatewayTest extends TestCase
     }
 
     /**
+     * @depends testInitialize
+     * @return void
+     */
+    #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
+    public function testListReceiptsUseDefaultParameters()
+    {
+        $omnireceipt = (self::createOmnireceipt())
+            ->initialize(['auth' => 'ok']);
+
+        try {
+            $omnireceipt->listReceipts();
+            $this->fail('Exception didn\'t work');
+        } catch (ParameterValidateException $exception) {
+            $this->assertIsArray($exception->error);
+            $this->assertIsArray($exception->error['parameters']);
+            $this->assertArrayHasKey('date_from', $exception->error['parameters']);
+            $this->assertArrayHasKey('date_to', $exception->error['parameters']);
+            $this->assertArrayNotHasKey('deleted', $exception->error['parameters']);
+        }
+    }
+
+    /**
      * @depends testListReceipts
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
@@ -264,8 +287,11 @@ class GatewayTest extends TestCase
 
         $id = 'pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
         $response = $omnireceipt->detailsReceipt($id);
-        $this->assertNotEmpty($response->getState());
-        $this->assertInstanceOf(Carbon::class, $response->getDate());
+        $this->assertTrue($response->isSuccessful());
+        $receipt = $response->getReceipt();
+        $this->assertInstanceOf(Receipt::class, $receipt);
+        $this->assertEquals($id, $receipt->getId());
+        $this->assertInstanceOf(Carbon::class, $receipt->getDate());
         $answer = $response->getData();
         $this->assertIsArray($answer);
         $this->assertEquals($id, $answer['id']);
@@ -283,11 +309,13 @@ class GatewayTest extends TestCase
 
         $id = 'pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
         $response = $omnireceipt->detailsReceipt($id);
+        $this->assertTrue($response->isSuccessful());
 
-        $this->assertTrue($response->isPending());
-        $this->assertFalse($response->isSuccessful());
-        $this->assertFalse($response->isCancelled());
-        $this->assertEquals('pending', $response->getState());
+        $receipt = $response->getReceipt();
+        $this->assertTrue($receipt->isPending());
+        $this->assertFalse($receipt->isSuccessful());
+        $this->assertFalse($receipt->isCancelled());
+        $this->assertEquals('pending', $receipt->getState());
     }
 
     /**
@@ -302,11 +330,13 @@ class GatewayTest extends TestCase
 
         $id = 'succeeded-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
         $response = $omnireceipt->detailsReceipt($id);
-
-        $this->assertFalse($response->isPending());
         $this->assertTrue($response->isSuccessful());
-        $this->assertFalse($response->isCancelled());
-        $this->assertEquals('succeeded', $response->getState());
+
+        $receipt = $response->getReceipt();
+        $this->assertFalse($receipt->isPending());
+        $this->assertTrue($receipt->isSuccessful());
+        $this->assertFalse($receipt->isCancelled());
+        $this->assertEquals('succeeded', $receipt->getState());
     }
 
     /**
@@ -321,11 +351,13 @@ class GatewayTest extends TestCase
 
         $id = 'canceled-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
         $response = $omnireceipt->detailsReceipt($id);
+        $this->assertTrue($response->isSuccessful());
 
-        $this->assertFalse($response->isPending());
-        $this->assertFalse($response->isSuccessful());
-        $this->assertTrue($response->isCancelled());
-        $this->assertEquals('canceled', $response->getState());
+        $receipt = $response->getReceipt();
+        $this->assertFalse($receipt->isPending());
+        $this->assertFalse($receipt->isSuccessful());
+        $this->assertTrue($receipt->isCancelled());
+        $this->assertEquals('canceled', $receipt->getState());
     }
 
     /**
@@ -340,12 +372,8 @@ class GatewayTest extends TestCase
 
         $id = 'not-found';
         $response = $omnireceipt->detailsReceipt($id);
-
-        $this->assertFalse($response->isPending());
         $this->assertFalse($response->isSuccessful());
-        $this->assertFalse($response->isCancelled());
-        $this->assertNull($response->getState());
-        $this->assertNull($response->getDate());
+        $this->assertNull($response->getData());
     }
 
     public static function initializeData(): array

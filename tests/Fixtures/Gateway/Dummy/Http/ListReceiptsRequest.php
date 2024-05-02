@@ -18,6 +18,13 @@ use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Helper;
  */
 class ListReceiptsRequest extends AbstractListReceiptRequest
 {
+    public function getDefaultParameters(): array
+    {
+        return [
+            'deleted' => false,
+        ];
+    }
+
     public static function rules(): array
     {
         return [

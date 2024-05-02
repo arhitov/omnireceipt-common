@@ -2,38 +2,24 @@
 
 namespace Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Http;
 
-use Carbon\Carbon;
 use Omnireceipt\Common\Http\Response\AbstractDetailsReceiptResponse;
+use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt;
+use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem;
 
 class DetailsReceiptResponse extends AbstractDetailsReceiptResponse
 {
-    public function isPending(): bool
+    public function getReceipt(): ?Receipt
     {
-        return $this->getState() === 'pending';
-    }
-
-    public function isSuccessful(): bool
-    {
-        return $this->getState() === 'succeeded';
-    }
-
-    public function isCancelled(): bool
-    {
-        return $this->getState() === 'canceled';
-    }
-
-    public function getState(): string|null
-    {
-        /** @var array|null $data */
-        $data = $this->getData();
-        return $data['status'] ?? null;
-    }
-
-    public function getDate(): Carbon|null
-    {
-        /** @var array|null $data */
-        $data = $this->getData();
-        $registered_at = $data['registered_at'] ?? null;
-        return $registered_at ? Carbon::parse($registered_at) : null;
+        /** @var array $receiptArray */
+        $receiptArray = $this->getData();
+        $goods = $receiptArray['goods'] ?? [];
+        unset($receiptArray['goods']);
+        $receipt = new Receipt($receiptArray);
+        foreach ($goods as $good) {
+            $receipt->addItem(
+                new ReceiptItem($good)
+            );
+        }
+        return $receipt;
     }
 }

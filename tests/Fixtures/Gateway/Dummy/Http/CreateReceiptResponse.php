@@ -6,8 +6,4 @@ use Omnireceipt\Common\Http\Response\AbstractCreateReceiptResponse;
 
 class CreateReceiptResponse extends AbstractCreateReceiptResponse
 {
-    public function isSuccessful(): bool
-    {
-        return $this->getCode() === 200;
-    }
 }

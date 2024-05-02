@@ -2,6 +2,7 @@
 
 namespace Omnireceipt\Common\Entities;
 
+use Carbon\Carbon;
 use Omnireceipt\Common\Contracts\ReceiptInterface;
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
 use Omnireceipt\Common\Supports\ParametersTrait;
@@ -19,8 +20,8 @@ use Omnireceipt\Common\Supports\ParametersTrait;
  * @method string getInfo()
  * @method self setInfo(string $value)
  *
- * @method string getDate()
- * @method self setDate(string $value)
+ * @method Carbon getDate()
+ * @method self setDate(string|Carbon $value)
  */
 abstract class Receipt implements ReceiptInterface
 {

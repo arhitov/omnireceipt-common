@@ -20,6 +20,11 @@ abstract class AbstractResponse implements ResponseInterface
     ) {
     }
 
+    public function isSuccessful(): bool
+    {
+        return $this->getCode() === 200;
+    }
+
     /**
      * Get the initiating request object.
      *
