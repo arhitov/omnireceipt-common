@@ -78,7 +78,6 @@ class ReceiptTest extends TestCase
         $receipt->addItem(self::makeReceiptItem(ReceiptItemFactory::definition()));
         $this->assertFalse($receipt->validate());
 
-
         $receipt->setCustomer(
             $this->makeCustomer()
         );
@@ -86,6 +85,34 @@ class ReceiptTest extends TestCase
 
         $receipt->setType(null);
         $this->assertFalse($receipt->validate());
+    }
+
+    /**
+     * @depends testGetterAndSetter
+     * @return void
+     */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    public function testValidatorItem()
+    {
+        $receipt = self::makeReceipt();
+        $receipt->initialize(ReceiptFactory::definition());
+
+        $receipt->addItem(self::makeReceiptItem());
+
+        $receipt->setCustomer(
+            $this->makeCustomer()
+        );
+
+        $this->assertFalse($receipt->validate());
+
+        $validateLastError = $receipt->validateLastError()['parameters'];
+        $this->assertArrayHasKey('items_error', $validateLastError);
+        $parameters = $validateLastError['items_error'][0]['parameters'];
+        $this->assertArrayHasKey('name', $parameters);
+        $this->assertArrayHasKey('amount', $parameters);
+        $this->assertArrayHasKey('currency', $parameters);
+        $this->assertArrayHasKey('quantity', $parameters);
+        $this->assertArrayHasKey('unit', $parameters);
     }
 
     /**
