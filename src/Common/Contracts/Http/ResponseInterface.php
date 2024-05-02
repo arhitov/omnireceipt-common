@@ -31,4 +31,11 @@ interface ResponseInterface
      * @return bool
      */
     public function isSuccessful(): bool;
+
+    /**
+     * If the request fails, throws an exception.
+     *
+     * @return $this
+     */
+    public function orFail(): static;
 }

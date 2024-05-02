@@ -3,13 +3,14 @@
 namespace Omnireceipt\Common\Exceptions\Http;
 
 use Omnireceipt\Common\Exceptions\RuntimeException;
-use Psr\Http\Message\RequestInterface;
+use Omnireceipt\Common\Contracts\Http\RequestInterface;
+use Psr\Http\Message\RequestInterface as PsrRequestInterface;
 
 class Exception extends RuntimeException
 {
-    public RequestInterface $request;
+    public RequestInterface|PsrRequestInterface $request;
 
-    public function __construct($message, RequestInterface $request, $previous = null)
+    public function __construct($message, RequestInterface|PsrRequestInterface $request, $previous = null)
     {
         $this->request = $request;
 
