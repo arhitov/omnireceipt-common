@@ -31,6 +31,7 @@ if (! function_exists('dump')) {
     }
 }
 if (! function_exists('dd')) {
+    #[\JetBrains\PhpStorm\NoReturn]
     function dd(): void
     {
         dump(...func_get_args());

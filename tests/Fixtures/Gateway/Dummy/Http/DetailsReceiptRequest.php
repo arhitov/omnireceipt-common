@@ -15,6 +15,11 @@ use Omnireceipt\Common\Http\Request\AbstractDetailsReceiptRequest;
 use Omnireceipt\Common\Http\Response\AbstractResponse;
 use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Helper;
 
+/**
+ * @method string getId()
+ * @method string|null getIdOrNull()
+ * @method self setId(string $value)
+ */
 class DetailsReceiptRequest extends AbstractDetailsReceiptRequest
 {
     public static function rules(): array

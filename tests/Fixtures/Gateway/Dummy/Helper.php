@@ -30,7 +30,7 @@ class Helper
                 $name,
             ]) . '.json';
         if (! file_exists($fileName)) {
-            throw new RuntimeException("File fixture \"{$name}\" not found");
+            throw new RuntimeException("File fixture \"$name\" not found");
         }
 
         return file_get_contents($fileName);

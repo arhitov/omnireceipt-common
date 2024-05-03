@@ -161,7 +161,7 @@ class Helper
         }
 
         // Check if the class exists and implements the Gateway Interface, if so -> FCQN
-        if (is_subclass_of($shortName, GatewayInterface::class, true)) {
+        if (is_subclass_of($shortName, GatewayInterface::class)) {
             return $shortName;
         }
 

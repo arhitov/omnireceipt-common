@@ -14,6 +14,7 @@ use Omnireceipt\Common\Contracts\ReceiptItemInterface;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
 use Omnireceipt\Common\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Depends;
 
 class ReceiptItemTest extends TestCase
 {
@@ -28,7 +29,7 @@ class ReceiptItemTest extends TestCase
      * @depends testBase
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testBase')]
+    #[Depends('testBase')]
     public function testGetterAndSetter()
     {
         $receiptItem = self::makeReceiptItem();
@@ -59,7 +60,7 @@ class ReceiptItemTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testGetterException()
     {
         $receiptItem = self::makeReceiptItem();
@@ -72,7 +73,7 @@ class ReceiptItemTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testValidator()
     {
         $receiptItem = self::makeReceiptItem(ReceiptItemFactory::definition());

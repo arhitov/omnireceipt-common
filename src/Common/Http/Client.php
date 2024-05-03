@@ -11,14 +11,14 @@
 namespace Omnireceipt\Common\Http;
 
 use Exception;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\RequestFactory;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use Omnireceipt\Common\Exceptions\Http\NetworkException;
 use Omnireceipt\Common\Exceptions\Http\RequestException;
 use Omnireceipt\Common\Contracts\Http\ClientInterface;
+use Psr\Http\Client\ClientInterface as PsrClientInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\RequestFactoryInterface as PsrRequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -29,14 +29,14 @@ class Client implements ClientInterface
      * The Http Client which implements `public function sendRequest(RequestInterface $request)`
      * Note: Will be changed to PSR-18 when released
      */
-    private HttpClient $httpClient;
+    private PsrClientInterface $httpClient;
 
-    private RequestFactory $requestFactory;
+    private PsrRequestFactoryInterface $requestFactory;
 
-    public function __construct($httpClient = null, RequestFactory $requestFactory = null)
+    public function __construct(PsrClientInterface $httpClient = null, PsrRequestFactoryInterface $requestFactory = null)
     {
-        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
-        $this->requestFactory = $requestFactory ?: MessageFactoryDiscovery::find();
+        $this->httpClient = $httpClient ?: Psr18ClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?: Psr17FactoryDiscovery::findRequestFactory();
     }
 
     /**

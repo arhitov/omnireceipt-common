@@ -19,7 +19,7 @@ class ParameterNotFoundException extends ParameterException
     ) {
         if (empty($message)) {
             $className = $class::class;
-            $message = "Property \"{$className}::{$property}\" not fount";
+            $message = "Property \"$className::$property\" not fount";
         }
 
         parent::__construct($message);

@@ -14,6 +14,7 @@ use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException;
 use Omnireceipt\Common\Supports\ParametersTrait;
 use Omnireceipt\Common\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Depends;
 
 class ParametersTraitTest extends TestCase
 {
@@ -34,7 +35,7 @@ class ParametersTraitTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testGetterException()
     {
 
@@ -48,7 +49,7 @@ class ParametersTraitTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testGetterOrNull()
     {
 
@@ -61,7 +62,7 @@ class ParametersTraitTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testValidator()
     {
         $object = self::makeObject();
@@ -116,7 +117,7 @@ class ParametersTraitTest extends TestCase
      * @depends testValidator
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testValidator')]
+    #[Depends('testValidator')]
     public function testValidatorException()
     {
         $object = self::makeObject();

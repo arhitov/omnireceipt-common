@@ -24,6 +24,7 @@ use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
 use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Gateway;
 use Omnireceipt\Common\Tests\TestCase;
 use Omnireceipt\Omnireceipt;
+use PHPUnit\Framework\Attributes\Depends;
 
 class GatewayTest extends TestCase
 {
@@ -94,7 +95,7 @@ class GatewayTest extends TestCase
      * @depends testBase
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testBase')]
+    #[Depends('testBase')]
     public function testBaseException()
     {
         $this->expectException(RuntimeException::class);
@@ -107,7 +108,7 @@ class GatewayTest extends TestCase
      * @depends testBase
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testBase')]
+    #[Depends('testBase')]
     public function testInitialize()
     {
         $omnireceipt = (self::createOmnireceipt())
@@ -130,12 +131,13 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
+    #[Depends('testInitialize')]
     public function testCreateReceipt()
     {
         $omnireceipt = (self::createOmnireceipt())
                        ->initialize(['auth' => 'ok']);
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
         $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
@@ -149,6 +151,7 @@ class GatewayTest extends TestCase
         ]);
         $receipt->setCustomer($customer);
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $receiptItem */
         $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
         $receiptItem->setVatRate(0);
         $receiptItem->setVatSum(0);
@@ -179,12 +182,13 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
+    #[Depends('testInitialize')]
     public function testCreateReceiptTwo()
     {
         $omnireceipt = (self::createOmnireceipt())
                        ->initialize(['auth' => 'ok']);
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
         $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
@@ -197,6 +201,7 @@ class GatewayTest extends TestCase
         ]);
         $receipt->setCustomer($customer);
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $receiptItem */
         $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
         $receiptItem->setVatRate(0);
         $receiptItem->setVatSum(0);
@@ -218,7 +223,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
+    #[Depends('testInitialize')]
     public function testListReceipts()
     {
         $omnireceipt = (self::createOmnireceipt())
@@ -245,7 +250,7 @@ class GatewayTest extends TestCase
      * @depends testInitialize
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
+    #[Depends('testInitialize')]
     public function testListReceiptsUseDefaultParameters()
     {
         $omnireceipt = (self::createOmnireceipt())
@@ -268,7 +273,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testListReceipts')]
+    #[Depends('testListReceipts')]
     public function testListReceiptsNotFound()
     {
         $omnireceipt = self::createOmnireceipt();
@@ -294,7 +299,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testInitialize')]
+    #[Depends('testInitialize')]
     public function testDetailsReceipt()
     {
         $omnireceipt = self::createOmnireceipt();
@@ -316,7 +321,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
+    #[Depends('testDetailsReceipt')]
     public function testDetailsReceiptPending()
     {
         $omnireceipt = self::createOmnireceipt();
@@ -325,6 +330,7 @@ class GatewayTest extends TestCase
         $response = $omnireceipt->detailsReceipt($id);
         $this->assertTrue($response->isSuccessful());
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
         $receipt = $response->getReceipt();
         $this->assertTrue($receipt->isPending());
         $this->assertFalse($receipt->isSuccessful());
@@ -337,7 +343,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
+    #[Depends('testDetailsReceipt')]
     public function testDetailsReceiptSuccessful()
     {
         $omnireceipt = self::createOmnireceipt();
@@ -346,6 +352,7 @@ class GatewayTest extends TestCase
         $response = $omnireceipt->detailsReceipt($id);
         $this->assertTrue($response->isSuccessful());
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
         $receipt = $response->getReceipt();
         $this->assertFalse($receipt->isPending());
         $this->assertTrue($receipt->isSuccessful());
@@ -358,7 +365,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
+    #[Depends('testDetailsReceipt')]
     public function testDetailsReceiptCancelled()
     {
         $omnireceipt = self::createOmnireceipt();
@@ -367,6 +374,7 @@ class GatewayTest extends TestCase
         $response = $omnireceipt->detailsReceipt($id);
         $this->assertTrue($response->isSuccessful());
 
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
         $receipt = $response->getReceipt();
         $this->assertFalse($receipt->isPending());
         $this->assertFalse($receipt->isSuccessful());
@@ -379,7 +387,7 @@ class GatewayTest extends TestCase
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testDetailsReceipt')]
+    #[Depends('testDetailsReceipt')]
     public function testDetailsReceiptNotFound()
     {
         $omnireceipt = self::createOmnireceipt();

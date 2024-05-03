@@ -74,7 +74,7 @@ trait ParametersTrait
         }
 
         $className = $this::class;
-        throw new ErrorException("Method \"{$className}:{$name}\" not found");
+        throw new ErrorException("Method \"$className:$name\" not found");
     }
 
     /**
@@ -152,7 +152,7 @@ trait ParametersTrait
         $this->parametersError = [];
 
         foreach ($this->getRules() as $key => $rules) {
-            $value = $this->parameters->get($key, null);
+            $value = $this->parameters->get($key);
             if (is_null($value)) {
                 if (in_array('nullable', $rules)) {
                     continue;

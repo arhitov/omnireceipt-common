@@ -22,9 +22,11 @@ class CreateReceiptRequest extends AbstractCreateReceiptRequest
 
     public function getData(): array
     {
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
         $receipt = $this->getReceipt();
 
         $goods = [];
+        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $item */
         foreach ($receipt->getItemList() as $item) {
             $goods[] = [
                 'good_name' => $item->getName(),

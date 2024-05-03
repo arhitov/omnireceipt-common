@@ -15,6 +15,7 @@ use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
 use Omnireceipt\Common\Tests\factories\ReceiptFactory;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
 use Omnireceipt\Common\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Depends;
 
 class ReceiptTest extends TestCase
 {
@@ -29,15 +30,12 @@ class ReceiptTest extends TestCase
      * @depends testBase
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testBase')]
+    #[Depends('testBase')]
     public function testGetterAndSetter()
     {
         $receipt = self::makeReceipt();
         $type = 'Type';
         $paymentId = 'Payment id';
-        $customerName = 'Customer name';
-        $customerEmail = 'Customer email';
-        $customerPhone = 'Customer phone';
         $info = 'Info';
         $date = 'Date';
         $qweAsd = 'QweAsd';
@@ -60,7 +58,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testGetterException()
     {
 
@@ -74,7 +72,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testValidator()
     {
         $receipt = self::makeReceipt();
@@ -99,7 +97,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testValidatorItem()
     {
         $receipt = self::makeReceipt();
@@ -127,7 +125,7 @@ class ReceiptTest extends TestCase
      * @depends testGetterAndSetter
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\Depends('testGetterAndSetter')]
+    #[Depends('testGetterAndSetter')]
     public function testItems()
     {
         $receipt = self::makeReceipt(ReceiptFactory::definition());

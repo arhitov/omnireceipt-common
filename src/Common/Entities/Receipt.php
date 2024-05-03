@@ -115,7 +115,7 @@ abstract class Receipt implements ReceiptInterface
             /** @var ReceiptItem $item */
             foreach ($this->items as $idx => $item) {
                 if (! $item->validate()) {
-                    $this->parametersError['items'] = ["Item idx:{$idx} did not fail validation"];
+                    $this->parametersError['items'] = ["Item idx:$idx did not fail validation"];
                     $this->parametersError['items_error'] ??= [];
                     $this->parametersError['items_error'][$idx] = $item->validateLastError();
                 }

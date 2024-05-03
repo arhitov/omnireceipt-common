@@ -34,16 +34,14 @@
         "php": "^8.0",
         "psr/http-message": "*",
         "symfony/http-foundation": "*",
-        "php-http/httplug": "*",
         "php-http/discovery": "*",
-        "php-http/message-factory": "*",
-        "php-http/message": "*",
         "doctrine/collections": "*",
         "nesbot/carbon": "*"
     },
     "require-dev": {
+        "guzzlehttp/psr7": "*",
         "phpunit/phpunit": "*",
-        "php-http/guzzle6-adapter": "*"
+        "php-http/curl-client": "*"
     },
     "scripts": {
         "test": "phpunit"

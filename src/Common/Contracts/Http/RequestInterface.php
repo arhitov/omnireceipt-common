@@ -10,8 +10,6 @@
 
 namespace Omnireceipt\Common\Contracts\Http;
 
-use Omnireceipt\Common\Http\Response\AbstractResponse;
-
 interface RequestInterface
 {
     /**

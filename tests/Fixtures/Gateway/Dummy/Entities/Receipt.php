@@ -14,6 +14,14 @@ use Carbon\Carbon;
 use Omnireceipt\Common\Entities\Receipt as BaseReceipt;
 
 /**
+ * @method string getUuid()
+ * @method string|null getUuidOrNull()
+ * @method self setUuid(string $value)
+ *
+ * @method string getDocNum()
+ * @method string|null getDocNumOrNull()
+ * @method self setDocNum(string $value)
+ *
  * @method string getState()
  * @method self setState(string $value)
  */

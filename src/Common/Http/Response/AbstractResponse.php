@@ -78,9 +78,9 @@ abstract class AbstractResponse implements ResponseInterface
     {
         $code = $this->getCode();
         if (400 <= $code && $code <= 499) {
-            throw new Exception("Client Error \"{$code}\"", $this->getRequest());
+            throw new Exception("Client Error \"$code\"", $this->getRequest());
         } elseif (500 <= $code && $code <= 599) {
-            throw new Exception("Server Error \"{$code}\"", $this->getRequest());
+            throw new Exception("Server Error \"$code\"", $this->getRequest());
         }
         return $this;
     }
