@@ -177,6 +177,11 @@ abstract class AbstractGateway implements GatewayInterface
                 )),
             );
         }
+
+        $receipt->setSeller(
+            $this->getSeller(),
+        );
+
         return $receipt;
     }
 
