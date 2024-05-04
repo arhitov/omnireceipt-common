@@ -113,6 +113,26 @@ trait ParametersTrait
     }
 
     /**
+     * Get all object data as array.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->parameters->all();
+    }
+
+    /**
+     * Get all object data as json.
+     *
+     * @return string
+     */
+    public function serialize(): string
+    {
+        return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * Initialize the object with parameters.
      *
      * If any unknown parameters passed, they will be ignored.

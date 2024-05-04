@@ -13,13 +13,20 @@ namespace Omnireceipt\Common\Entities;
 use Omnireceipt\Common\Contracts\SellerInterface;
 use Omnireceipt\Common\Supports\ParametersTrait;
 
+/**
+ * @method string getName() // Наименование организации поставщика
+ * @method string getNameOrNull() // Наименование организации поставщика
+ * @method self setName(string $value)
+ */
 abstract class Seller implements SellerInterface
 {
     use ParametersTrait;
 
     public static function rules(): array
     {
-        return [];
+        return [
+            'name' => ['required', 'string'],
+        ];
     }
 
     public function __construct(

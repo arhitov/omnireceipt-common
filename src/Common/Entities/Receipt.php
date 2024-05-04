@@ -11,6 +11,7 @@
 namespace Omnireceipt\Common\Entities;
 
 use Carbon\Carbon;
+use Doctrine\Common\Collections\ArrayCollection;
 use Omnireceipt\Common\Contracts\ReceiptInterface;
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
 use Omnireceipt\Common\Supports\ParametersTrait;
@@ -40,13 +41,14 @@ abstract class Receipt implements ReceiptInterface
 {
     use ParametersTrait {
         validate as validateParametersTrait;
+        toArray as toArrayParametersTrait;
     }
 
     protected Seller $seller;
     protected ?Customer $customer = null;
 
-    /** @var array<int, ReceiptItemInterface> */
-    protected array $items;
+    /** @var ArrayCollection<int, ReceiptItemInterface> */
+    protected ArrayCollection $items;
 
     public static function rules(): array
     {
@@ -62,6 +64,8 @@ abstract class Receipt implements ReceiptInterface
     public function __construct(
         array $parameters = [],
     ) {
+        $this->items = new ArrayCollection;
+
         $this->initialize($parameters);
     }
 
@@ -93,14 +97,14 @@ abstract class Receipt implements ReceiptInterface
      */
     public function addItem(ReceiptItem $item): self
     {
-        $this->items[] = $item;
+        $this->items->add($item);
         return $this;
     }
 
     /**
-     * @return array<int, ReceiptItem>
+     * @return ArrayCollection<int, ReceiptItem>
      */
-    public function getItemList(): array
+    public function getItemList(): ArrayCollection
     {
         return $this->items;
     }
@@ -109,7 +113,7 @@ abstract class Receipt implements ReceiptInterface
     {
         $this->validateParametersTrait();
 
-        if (empty($this->items)) {
+        if ($this->items->isEmpty()) {
             $this->parametersError['items'] = ['Items must be'];
         } else {
             /** @var ReceiptItem $item */
@@ -127,6 +131,21 @@ abstract class Receipt implements ReceiptInterface
         }
 
         return empty($this->parametersError);
+    }
+
+    public function toArray(): array
+    {
+        $array = $this->toArrayParametersTrait();
+
+        $array['seller'] = $this->getSeller()->toArray();
+        $array['customer'] = $this->getCustomer()?->toArray();
+
+        $array['items'] = [];
+        foreach ($this->getItemList() as $item) {
+            $array['items'][] = $item->toArray();
+        }
+
+        return $array;
     }
 
     /**

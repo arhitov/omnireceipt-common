@@ -13,10 +13,19 @@ namespace Omnireceipt\Common\Tests;
 use Omnireceipt\Common\Entities\Customer;
 use Omnireceipt\Common\Entities\Receipt;
 use Omnireceipt\Common\Entities\ReceiptItem;
+use Omnireceipt\Common\Entities\Seller;
 use PHPUnit\Framework\TestCase as UnitTestCase;
 
 abstract class TestCase extends UnitTestCase
 {
+    public static function makeSeller(array $parameters = []): Seller
+    {
+        return new class($parameters) extends Seller
+        {
+
+        };
+    }
+
     public static function makeCustomer(array $parameters = []): Customer
     {
         return new class($parameters) extends Customer

@@ -19,8 +19,10 @@ use Omnireceipt\Common\Entities\Seller;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException;
 use Omnireceipt\Common\Exceptions\RuntimeException;
 use Omnireceipt\Common\Supports\Helper;
+use Omnireceipt\Common\Tests\factories\CustomerFactory;
 use Omnireceipt\Common\Tests\factories\ReceiptFactory;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
+use Omnireceipt\Common\Tests\factories\SellerFactory;
 use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Gateway;
 use Omnireceipt\Common\Tests\TestCase;
 use Omnireceipt\Omnireceipt;
@@ -47,37 +49,31 @@ class GatewayTest extends TestCase
         $this->assertTrue($omnireceipt->validate());
 
         // Customer
-        $customerName = 'Ivanov Ivan';
-        $customer = $omnireceipt->customerFactory(['name' => $customerName]);
+        $customerDefinition = CustomerFactory::definition();
+        $customer = $omnireceipt->customerFactory($customerDefinition);
         $this->assertInstanceOf(Customer::class, $customer);
-        $this->assertEquals($customerName, $customer->getName());
+        $this->assertEquals($customerDefinition['name'], $customer->getName());
         $this->assertTrue($customer->validate());
 
         // Seller
-        $seller = $omnireceipt->sellerFactory();
+        $seller = $omnireceipt->sellerFactory(
+            SellerFactory::definition(),
+        );
         $this->assertInstanceOf(Seller::class, $seller);
+
         $this->assertTrue($seller->validate());
 
         // Receipt
         $receipt = $omnireceipt->receiptFactory(
-            [
-                'type'          => 'payment',
-                'date'          => '2024-04-29T18:27:34.000+03:00',
-            ],
-            [
-                'name'          => 'FLAG, W/ 2 HOLDERS, NO. 22',
-                'amount'        => 2.12,
-                'currency'      => 'USD',
-                'quantity'      => 2,
-                'unit'          => 'pc',
-            ],
-            [
-                'name'          => 'MINI WIG, NO. 288',
-                'amount'        => 1.54,
-                'currency'      => 'USD',
-                'quantity'      => 2,
-                'unit'          => 'pc',
-            ],
+            ReceiptFactory::definition(),
+            array_merge(
+                ReceiptItemFactory::definition(),
+                ['amount' => 2.12],
+            ),
+            array_merge(
+                ReceiptItemFactory::definition(),
+                ['amount' => 1.54],
+            ),
         );
         $this->assertInstanceOf(Receipt::class, $receipt);
         $this->assertFalse($receipt->validate());
@@ -88,7 +84,7 @@ class GatewayTest extends TestCase
         );
         $this->assertTrue($receipt->validate());
         $this->assertEquals(3.66, $receipt->getAmount());
-        $this->assertCount(2, $receipt->getItemList());
+        $this->assertEquals(2, $receipt->getItemList()->count());
     }
 
     /**
@@ -142,14 +138,11 @@ class GatewayTest extends TestCase
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
 
-        $classNameCustomer = $omnireceipt::classNameCustomer();
-        $customer = new $classNameCustomer([
-            'id'    => '4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f',
-            'name'  => 'Ivanov Ivan Ivanovich',
-            'phone' => '+79000000000',
-            'email' => 'email@email.ru',
-        ]);
-        $receipt->setCustomer($customer);
+        $receipt->setCustomer(
+            CustomerFactory::create(
+                $omnireceipt::classNameCustomer(),
+            ),
+        );
 
         /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $receiptItem */
         $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
@@ -193,13 +186,11 @@ class GatewayTest extends TestCase
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
 
-        $customer = $omnireceipt->customerFactory([
-            'id'    => '4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f',
-            'name'  => 'Ivanov Ivan Ivanovich',
-            'phone' => '+79000000000',
-            'email' => 'email@email.ru',
-        ]);
-        $receipt->setCustomer($customer);
+        $receipt->setCustomer(
+            CustomerFactory::create(
+                $omnireceipt::classNameCustomer(),
+            ),
+        );
 
         /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $receiptItem */
         $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());

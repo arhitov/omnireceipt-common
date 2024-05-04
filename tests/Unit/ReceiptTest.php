@@ -12,8 +12,10 @@ namespace Omnireceipt\Common\Tests\Unit;
 
 use Omnireceipt\Common\Contracts\ReceiptInterface;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
+use Omnireceipt\Common\Tests\factories\CustomerFactory;
 use Omnireceipt\Common\Tests\factories\ReceiptFactory;
 use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
+use Omnireceipt\Common\Tests\factories\SellerFactory;
 use Omnireceipt\Common\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Depends;
 
@@ -21,9 +23,9 @@ class ReceiptTest extends TestCase
 {
     public function testBase()
     {
-        $receiptItem = self::makeReceipt();
+        $receipt = self::makeReceipt();
 
-        $this->assertInstanceOf(ReceiptInterface::class, $receiptItem);
+        $this->assertInstanceOf(ReceiptInterface::class, $receipt);
     }
 
     /**
@@ -61,7 +63,6 @@ class ReceiptTest extends TestCase
     #[Depends('testGetterAndSetter')]
     public function testGetterException()
     {
-
         $receipt = self::makeReceipt();
 
         $this->expectException(ParameterNotFoundException::class);
@@ -122,6 +123,46 @@ class ReceiptTest extends TestCase
     }
 
     /**
+     * @depends testValidatorItem
+     * @return void
+     */
+    #[Depends('testValidatorItem')]
+    public function testToArray()
+    {
+        $receipt = self::makeReceipt();
+        $receipt->initialize(ReceiptFactory::definition());
+        $receipt->setSeller(
+            self::makeSeller(SellerFactory::definition()),
+        );
+        $receipt->addItem(
+            self::makeReceiptItem(ReceiptItemFactory::definition())
+        );
+
+        $array = $receipt->toArray();
+        $this->assertIsArray($array);
+        $this->assertArrayHasKey('seller', $array);
+        $this->assertIsArray($array['seller']);
+        $this->assertEquals($receipt->getSeller()->getName(), $array['seller']['name']);
+
+        $this->assertArrayHasKey('customer', $array);
+        $this->assertNull($array['customer']);
+
+        $this->assertArrayHasKey('items', $array);
+        $this->assertIsArray($array['items']);
+        $this->assertCount(1, $array['items']);
+        $this->assertEquals($receipt->getItemList()->first()->getName(), $array['items'][0]['name']);
+
+        $receipt->setCustomer(
+            self::makeCustomer(CustomerFactory::definition()),
+        );
+
+        $array = $receipt->toArray();
+        $this->assertArrayHasKey('customer', $array);
+        $this->assertIsArray($array['customer']);
+        $this->assertEquals($receipt->getCustomer()->getName(), $array['customer']['name']);
+    }
+
+    /**
      * @depends testGetterAndSetter
      * @return void
      */
@@ -138,7 +179,7 @@ class ReceiptTest extends TestCase
         $receiptItem->setAmount(20.82);
         $receipt->addItem($receiptItem);
 
-        $this->assertCount(2, $receipt->getItemList());
+        $this->assertEquals(2, $receipt->getItemList()->count());
         $this->assertEquals(33.33, $receipt->getAmount());
     }
 }

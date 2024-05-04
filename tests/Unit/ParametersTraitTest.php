@@ -22,13 +22,13 @@ class ParametersTraitTest extends TestCase
     {
         $object = self::makeObject();
         $name = 'Name';
-        $qwe_asd = 'QweAsd';
+        $qweAsd = 'QweAsd';
 
         $object->setName($name);
-        $object->setQweAsd($qwe_asd);
+        $object->setQweAsd($qweAsd);
 
         $this->assertEquals($name, $object->getName());
-        $this->assertEquals($qwe_asd, $object->getQweAsd());
+        $this->assertEquals($qweAsd, $object->getQweAsd());
     }
 
     /**
@@ -38,7 +38,6 @@ class ParametersTraitTest extends TestCase
     #[Depends('testGetterAndSetter')]
     public function testGetterException()
     {
-
         $object = self::makeObject();
         $this->assertEmpty($object->getParameters());
         $this->expectException(ParameterNotFoundException::class);
@@ -52,7 +51,6 @@ class ParametersTraitTest extends TestCase
     #[Depends('testGetterAndSetter')]
     public function testGetterOrNull()
     {
-
         $object = self::makeObject();
         $this->assertEmpty($object->getParameters());
         $this->assertNull($object->getNameOrNull());
@@ -123,6 +121,47 @@ class ParametersTraitTest extends TestCase
         $object = self::makeObject();
         $this->expectException(ParameterValidateException::class);
         $object->validateOrFail();
+    }
+
+    /**
+     * @depends testGetterAndSetter
+     * @return void
+     */
+    #[Depends('testGetterAndSetter')]
+    public function testToArray()
+    {
+        $object = self::makeObject();
+        $name = 'Name';
+        $qweAsd = 'QweAsd';
+
+        $object->setName($name);
+        $object->setQweAsd($qweAsd);
+
+        $array = $object->toArray();
+        $this->assertIsArray($array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('qwe_asd', $array);
+        $this->assertEquals($name, $array['name']);
+        $this->assertEquals($qweAsd, $array['qwe_asd']);
+    }
+
+    /**
+     * @depends testToArray
+     * @return void
+     */
+    #[Depends('testToArray')]
+    public function testSerialize()
+    {
+        $object = self::makeObject();
+        $name = 'Name';
+        $qweAsd = 'QweAsd';
+
+        $object->setName($name);
+        $object->setQweAsd($qweAsd);
+
+        $json = $object->serialize();
+        $this->assertNotEmpty($json);
+        $this->assertJson($json);
     }
 
     protected static function makeObject(): object
