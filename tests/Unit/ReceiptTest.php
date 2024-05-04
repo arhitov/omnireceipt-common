@@ -12,10 +12,10 @@ namespace Omnireceipt\Common\Tests\Unit;
 
 use Omnireceipt\Common\Contracts\ReceiptInterface;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterNotFoundException;
-use Omnireceipt\Common\Tests\factories\CustomerFactory;
-use Omnireceipt\Common\Tests\factories\ReceiptFactory;
-use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
-use Omnireceipt\Common\Tests\factories\SellerFactory;
+use Omnireceipt\Common\Tests\Factories\CustomerFactory;
+use Omnireceipt\Common\Tests\Factories\ReceiptFactory;
+use Omnireceipt\Common\Tests\Factories\ReceiptItemFactory;
+use Omnireceipt\Common\Tests\Factories\SellerFactory;
 use Omnireceipt\Common\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Depends;
 

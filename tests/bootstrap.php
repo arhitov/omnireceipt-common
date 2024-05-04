@@ -8,8 +8,6 @@
  * @copyright Copyright (c) 2024, Alexander Arhitov, clgsru@gmail.com
  */
 
-$_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
-
 if (! function_exists('dump')) {
     function dump(): void
     {

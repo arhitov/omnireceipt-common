@@ -25,6 +25,12 @@ use Omnireceipt\Common\Supports\Helper;
 use Omnireceipt\Common\Supports\ParametersTrait;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @method static string classNameReceipt()
+ * @method static string classNameCreateReceiptRequest()
+ * @method static string classNameListReceiptsRequest()
+ * @method static string classNameDetailsReceiptRequest()
+ */
 abstract class AbstractGateway implements GatewayInterface
 {
     use ParametersTrait;

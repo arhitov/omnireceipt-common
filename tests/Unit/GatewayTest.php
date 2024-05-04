@@ -19,11 +19,10 @@ use Omnireceipt\Common\Entities\Seller;
 use Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException;
 use Omnireceipt\Common\Exceptions\RuntimeException;
 use Omnireceipt\Common\Supports\Helper;
-use Omnireceipt\Common\Tests\factories\CustomerFactory;
-use Omnireceipt\Common\Tests\factories\ReceiptFactory;
-use Omnireceipt\Common\Tests\factories\ReceiptItemFactory;
-use Omnireceipt\Common\Tests\factories\SellerFactory;
-use Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Gateway;
+use Omnireceipt\Common\Tests\Factories\CustomerFactory;
+use Omnireceipt\Common\Tests\Factories\ReceiptFactory;
+use Omnireceipt\Common\Tests\Factories\ReceiptItemFactory;
+use Omnireceipt\Common\Tests\Factories\SellerFactory;
 use Omnireceipt\Common\Tests\TestCase;
 use Omnireceipt\Omnireceipt;
 use PHPUnit\Framework\Attributes\Depends;
@@ -133,7 +132,7 @@ class GatewayTest extends TestCase
         $omnireceipt = (self::createOmnireceipt())
                        ->initialize(['auth' => 'ok']);
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
+        /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
@@ -144,7 +143,7 @@ class GatewayTest extends TestCase
             ),
         );
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $receiptItem */
+        /** @var \Omnireceipt\Dummy\Entities\ReceiptItem $receiptItem */
         $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
         $receiptItem->setVatRate(0);
         $receiptItem->setVatSum(0);
@@ -181,7 +180,7 @@ class GatewayTest extends TestCase
         $omnireceipt = (self::createOmnireceipt())
                        ->initialize(['auth' => 'ok']);
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
+        /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
         $receipt->setUuid('0ecab77f-7062-4a5f-aa20-35213db1397c');
         $receipt->setDocNum('ТД00-000001');
@@ -192,7 +191,7 @@ class GatewayTest extends TestCase
             ),
         );
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\ReceiptItem $receiptItem */
+        /** @var \Omnireceipt\Dummy\Entities\ReceiptItem $receiptItem */
         $receiptItem = ReceiptItemFactory::create($omnireceipt::classNameReceiptItem());
         $receiptItem->setVatRate(0);
         $receiptItem->setVatSum(0);
@@ -321,7 +320,7 @@ class GatewayTest extends TestCase
         $response = $omnireceipt->detailsReceipt($id);
         $this->assertTrue($response->isSuccessful());
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
+        /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = $response->getReceipt();
         $this->assertTrue($receipt->isPending());
         $this->assertFalse($receipt->isSuccessful());
@@ -343,7 +342,7 @@ class GatewayTest extends TestCase
         $response = $omnireceipt->detailsReceipt($id);
         $this->assertTrue($response->isSuccessful());
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
+        /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = $response->getReceipt();
         $this->assertFalse($receipt->isPending());
         $this->assertTrue($receipt->isSuccessful());
@@ -365,7 +364,7 @@ class GatewayTest extends TestCase
         $response = $omnireceipt->detailsReceipt($id);
         $this->assertTrue($response->isSuccessful());
 
-        /** @var \Omnireceipt\Common\Tests\Fixtures\Gateway\Dummy\Entities\Receipt $receipt */
+        /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = $response->getReceipt();
         $this->assertFalse($receipt->isPending());
         $this->assertFalse($receipt->isSuccessful());
@@ -399,9 +398,9 @@ class GatewayTest extends TestCase
         ];
     }
 
-    protected static function createOmnireceipt(bool $initialize = true): Gateway
+    protected static function createOmnireceipt(bool $initialize = true): AbstractGateway
     {
-        $omnireceipt = Omnireceipt::create(Gateway::class);
+        $omnireceipt = Omnireceipt::create('Dummy');
         if ($initialize) {
             $omnireceipt->initialize(['auth' => 'ok']);
         }

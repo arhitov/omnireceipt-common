@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024, Alexander Arhitov, clgsru@gmail.com
  */
 
-namespace Omnireceipt\Common\Tests\factories;
+namespace Omnireceipt\Common\Tests\Factories;
 
 use Omnireceipt\Common\Entities\ReceiptItem;
 
