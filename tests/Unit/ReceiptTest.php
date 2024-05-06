@@ -140,26 +140,26 @@ class ReceiptTest extends TestCase
 
         $array = $receipt->toArray();
         $this->assertIsArray($array);
-        $this->assertArrayHasKey('seller', $array);
-        $this->assertIsArray($array['seller']);
-        $this->assertEquals($receipt->getSeller()->getName(), $array['seller']['name']);
+        $this->assertArrayHasKey('@seller', $array);
+        $this->assertIsArray($array['@seller']);
+        $this->assertEquals($receipt->getSeller()->getName(), $array['@seller']['name']);
 
-        $this->assertArrayHasKey('customer', $array);
-        $this->assertNull($array['customer']);
+        $this->assertArrayHasKey('@customer', $array);
+        $this->assertNull($array['@customer']);
 
-        $this->assertArrayHasKey('items', $array);
-        $this->assertIsArray($array['items']);
-        $this->assertCount(1, $array['items']);
-        $this->assertEquals($receipt->getItemList()->first()->getName(), $array['items'][0]['name']);
+        $this->assertArrayHasKey('@itemList', $array);
+        $this->assertIsArray($array['@itemList']);
+        $this->assertCount(1, $array['@itemList']);
+        $this->assertEquals($receipt->getItemList()->first()->getName(), $array['@itemList'][0]['name']);
 
         $receipt->setCustomer(
             self::makeCustomer(CustomerFactory::definition()),
         );
 
         $array = $receipt->toArray();
-        $this->assertArrayHasKey('customer', $array);
-        $this->assertIsArray($array['customer']);
-        $this->assertEquals($receipt->getCustomer()->getName(), $array['customer']['name']);
+        $this->assertArrayHasKey('@customer', $array);
+        $this->assertIsArray($array['@customer']);
+        $this->assertEquals($receipt->getCustomer()->getName(), $array['@customer']['name']);
     }
 
     /**

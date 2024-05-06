@@ -133,16 +133,21 @@ abstract class Receipt implements ReceiptInterface
         return empty($this->parametersError);
     }
 
+    /**
+     * Creates an array for serialization.
+     *
+     * @return array
+     */
     public function toArray(): array
     {
         $array = $this->toArrayParametersTrait();
 
-        $array['seller'] = $this->getSeller()->toArray();
-        $array['customer'] = $this->getCustomer()?->toArray();
+        $array['@seller'] = $this->getSeller()->toArray();
+        $array['@customer'] = $this->getCustomer()?->toArray();
 
-        $array['items'] = [];
+        $array['@itemList'] = [];
         foreach ($this->getItemList() as $item) {
-            $array['items'][] = $item->toArray();
+            $array['@itemList'][] = $item->toArray();
         }
 
         return $array;

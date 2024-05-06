@@ -106,8 +106,7 @@ class GatewayTest extends TestCase
     #[Depends('testBase')]
     public function testInitialize()
     {
-        $omnireceipt = (self::createOmnireceipt())
-                       ->initialize(['auth' => 'ok']);
+        $omnireceipt = self::createOmnireceipt();
 
         $initializeData = self::initializeData();
 
@@ -129,8 +128,7 @@ class GatewayTest extends TestCase
     #[Depends('testInitialize')]
     public function testCreateReceipt()
     {
-        $omnireceipt = (self::createOmnireceipt())
-                       ->initialize(['auth' => 'ok']);
+        $omnireceipt = self::createOmnireceipt();
 
         /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
@@ -170,6 +168,38 @@ class GatewayTest extends TestCase
     }
 
     /**
+     * @depends testCreateReceipt
+     * @return void
+     */
+    #[Depends('testCreateReceipt')]
+    public function testRestoreReceipt()
+    {
+        $receiptJson = '{"asd_sdf":123,"type":"payment","payment_id":"24b94598-000f-5000-9000-1b68e7b15f3f","info":"Lego Bricks","date":"2016-08-25 13:48:01","@seller":{"name":"LLC \"HORNS AND HOOVES\""},"@customer":null,"@itemList":[{"asd_sdf":123,"name":"FLAG, W\/ 2 HOLDERS, NO. 22","code":"6446963\/104515","type":"product","amount":2.12,"currency":"USD","quantity":2,"unit":"pc","tax":13}]}';
+        $receiptArray = json_decode($receiptJson, true);
+
+        $omnireceipt = self::createOmnireceipt();
+        $receipt = $omnireceipt->receiptRestore($receiptArray);
+
+        $this->assertEquals($receiptJson, json_encode($receipt->toArray(), JSON_UNESCAPED_UNICODE));
+        $this->assertEquals($receiptArray['asd_sdf'], $receipt->getAsdSdf());
+        $this->assertEquals($receiptArray['type'], $receipt->getType());
+        $this->assertEquals($receiptArray['payment_id'], $receipt->getPaymentId());
+        $this->assertEquals($receiptArray['info'], $receipt->getInfo());
+        $this->assertEquals(Carbon::parse($receiptArray['date'])->toString(), $receipt->getDate()->toString());
+
+        $this->assertEquals($receiptArray['@seller'], $receipt->getSeller()->toArray());
+        $this->assertNull($receipt->getCustomer());
+        $this->assertEquals($receiptArray['@itemList'][0], $receipt->getItemList()->first()->toArray());
+
+        $receiptJson = '{"asd_sdf":123,"type":"payment","payment_id":"24b94598-000f-5000-9000-1b68e7b15f3f","info":"Lego Bricks","date":"2016-08-25 13:48:01","@seller":{"name":"LLC \"HORNS AND HOOVES\""},"@customer":{"id":"4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f","name":"Ivanov Ivan Ivanovich","phone":"+79000000000","email":"email@email.ru"},"@itemList":[{"asd_sdf":123,"name":"FLAG, W\/ 2 HOLDERS, NO. 22","code":"6446963\/104515","type":"product","amount":2.12,"currency":"USD","quantity":2,"unit":"pc","tax":0}]}';
+        $receiptArray = json_decode($receiptJson, true);
+
+        $receipt = $omnireceipt->receiptRestore($receiptArray);
+
+        $this->assertEquals($receiptArray['@customer'], $receipt->getCustomer()->toArray());
+    }
+
+    /**
      * @depends testInitialize
      * @return void
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
@@ -177,8 +207,7 @@ class GatewayTest extends TestCase
     #[Depends('testInitialize')]
     public function testCreateReceiptTwo()
     {
-        $omnireceipt = (self::createOmnireceipt())
-                       ->initialize(['auth' => 'ok']);
+        $omnireceipt = self::createOmnireceipt();
 
         /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */
         $receipt = ReceiptFactory::create($omnireceipt::classNameReceipt());
@@ -216,8 +245,7 @@ class GatewayTest extends TestCase
     #[Depends('testInitialize')]
     public function testListReceipts()
     {
-        $omnireceipt = (self::createOmnireceipt())
-                       ->initialize(['auth' => 'ok']);
+        $omnireceipt = self::createOmnireceipt();
 
         $response = $omnireceipt->listReceipts([
             'date_from' => '2016-08-25 00:00:00',
@@ -243,8 +271,7 @@ class GatewayTest extends TestCase
     #[Depends('testInitialize')]
     public function testListReceiptsUseDefaultParameters()
     {
-        $omnireceipt = (self::createOmnireceipt())
-            ->initialize(['auth' => 'ok']);
+        $omnireceipt = self::createOmnireceipt();
 
         try {
             $omnireceipt->listReceipts();
