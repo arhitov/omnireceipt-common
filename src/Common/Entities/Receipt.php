@@ -10,7 +10,6 @@
 
 namespace Omnireceipt\Common\Entities;
 
-use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Omnireceipt\Common\Contracts\ReceiptInterface;
 use Omnireceipt\Common\Contracts\ReceiptItemInterface;
@@ -33,9 +32,9 @@ use Omnireceipt\Common\Supports\ParametersTrait;
  * @method string getInfoOrNull()
  * @method self setInfo(string $value)
  *
- * @method Carbon getDate()
- * @method Carbon getDateOrNull()
- * @method self setDate(string|Carbon $value)
+ * @method string getDate()
+ * @method string getDateOrNull()
+ * @method self setDate(string $value)
  */
 abstract class Receipt implements ReceiptInterface
 {

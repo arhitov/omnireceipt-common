@@ -10,7 +10,6 @@
 
 namespace Omnireceipt\Common\Tests\Unit;
 
-use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Omnireceipt\Common\AbstractGateway;
 use Omnireceipt\Common\Entities\Customer;
@@ -185,7 +184,7 @@ class GatewayTest extends TestCase
         $this->assertEquals($receiptArray['type'], $receipt->getType());
         $this->assertEquals($receiptArray['payment_id'], $receipt->getPaymentId());
         $this->assertEquals($receiptArray['info'], $receipt->getInfo());
-        $this->assertEquals(Carbon::parse($receiptArray['date'])->toString(), $receipt->getDate()->toString());
+        $this->assertEquals($receiptArray['date'], $receipt->getDate());
 
         $this->assertEquals($receiptArray['@seller'], $receipt->getSeller()->toArray());
         $this->assertNull($receipt->getCustomer());
@@ -327,7 +326,7 @@ class GatewayTest extends TestCase
         $receipt = $response->getReceipt();
         $this->assertInstanceOf(Receipt::class, $receipt);
         $this->assertEquals($id, $receipt->getId());
-        $this->assertInstanceOf(Carbon::class, $receipt->getDate());
+        $this->assertNotEmpty($receipt->getDate());
         $answer = $response->getData();
         $this->assertIsArray($answer);
         $this->assertEquals($id, $answer['id']);

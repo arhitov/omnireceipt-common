@@ -1,7 +1,7 @@
 {
     "name": "omnireceipt/common",
     "description": "Common components for the Omnireceipt fiscal receipt processing library",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -35,11 +35,10 @@
         "psr/http-message": "*",
         "symfony/http-foundation": "*",
         "php-http/discovery": "*",
-        "doctrine/collections": "*",
-        "nesbot/carbon": "*"
+        "doctrine/collections": "*"
     },
     "require-dev": {
-        "omnireceipt/dummy": "^1.0",
+        "omnireceipt/dummy": "^1.2.1",
         "guzzlehttp/psr7": "*",
         "phpunit/phpunit": "*",
         "php-http/curl-client": "*"
