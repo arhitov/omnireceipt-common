@@ -195,12 +195,14 @@ abstract class AbstractGateway implements GatewayInterface
      * Creates a Receipt entity from an array.
      *
      * @param array $array
+     * @param string|null $className
+     * @param string|null $classItemName
      * @return Receipt
      */
-    public function receiptRestore(array $array): Receipt
+    public function receiptRestore(array $array, string $className = null, string $classItemName = null): Receipt
     {
-        $className = $this->classNameReceipt();
-        $classItemName = $this->classNameReceiptItem();
+        $className ??= $this->classNameReceipt();
+        $classItemName ??= $this->classNameReceiptItem();
 
         $parameters = $array;
         unset(
