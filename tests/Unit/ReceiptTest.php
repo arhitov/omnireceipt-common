@@ -142,7 +142,7 @@ class ReceiptTest extends TestCase
         $this->assertIsArray($array);
         $this->assertArrayHasKey('@seller', $array);
         $this->assertIsArray($array['@seller']);
-        $this->assertEquals($receipt->getSeller()->getName(), $array['@seller']['name']);
+        $this->assertEquals($receipt->getSeller()?->getName(), $array['@seller']['name']);
 
         $this->assertArrayHasKey('@customer', $array);
         $this->assertNull($array['@customer']);

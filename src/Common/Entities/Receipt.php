@@ -43,7 +43,7 @@ abstract class Receipt implements ReceiptInterface
         toArray as toArrayParametersTrait;
     }
 
-    protected Seller $seller;
+    protected ?Seller $seller = null;
     protected ?Customer $customer = null;
 
     /** @var ArrayCollection<int, ReceiptItemInterface> */
@@ -68,7 +68,7 @@ abstract class Receipt implements ReceiptInterface
         $this->initialize($parameters);
     }
 
-    public function getSeller(): Seller
+    public function getSeller(): ?Seller
     {
         return $this->seller;
     }
@@ -141,7 +141,7 @@ abstract class Receipt implements ReceiptInterface
     {
         $array = $this->toArrayParametersTrait();
 
-        $array['@seller'] = $this->getSeller()->toArray();
+        $array['@seller'] = $this->getSeller()?->toArray();
         $array['@customer'] = $this->getCustomer()?->toArray();
 
         $array['@itemList'] = [];

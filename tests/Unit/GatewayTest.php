@@ -186,7 +186,7 @@ class GatewayTest extends TestCase
         $this->assertEquals($receiptArray['info'], $receipt->getInfo());
         $this->assertEquals($receiptArray['date'], $receipt->getDate());
 
-        $this->assertEquals($receiptArray['@seller'], $receipt->getSeller()->toArray());
+        $this->assertEquals($receiptArray['@seller'], $receipt->getSeller()?->toArray());
         $this->assertNull($receipt->getCustomer());
         $this->assertEquals($receiptArray['@itemList'][0], $receipt->getItemList()->first()->toArray());
 
