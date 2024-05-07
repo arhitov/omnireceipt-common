@@ -56,7 +56,17 @@ class Client implements ClientInterface
         $body = null,
         string $protocolVersion = '1.1'
     ): ResponseInterface {
-        $request = $this->requestFactory->createRequest($method, $uri, $headers, $body, $protocolVersion);
+        $request = $this->requestFactory->createRequest($method, $uri);
+
+        foreach ($headers as $headerKey => $headerValue) {
+            $request = $request->withHeader($headerKey, $headerValue);
+        }
+
+        if (! is_null($body)) {
+            $request = $request->withBody($this->requestFactory->createStream($body));
+        }
+
+        $request = $request->withProtocolVersion($protocolVersion);
 
         return $this->sendRequest($request);
     }
