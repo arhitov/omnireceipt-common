@@ -320,16 +320,16 @@ class GatewayTest extends TestCase
     {
         $omnireceipt = self::createOmnireceipt();
 
-        $id = 'pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
-        $response = $omnireceipt->detailsReceipt($id);
+        $uuid = 'pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
+        $response = $omnireceipt->detailsReceipt($uuid);
         $this->assertTrue($response->isSuccessful());
         $receipt = $response->getReceipt();
         $this->assertInstanceOf(Receipt::class, $receipt);
-        $this->assertEquals($id, $receipt->getId());
+        $this->assertEquals($uuid, $receipt->getId());
         $this->assertNotEmpty($receipt->getDate());
         $answer = $response->getData();
         $this->assertIsArray($answer);
-        $this->assertEquals($id, $answer['id']);
+        $this->assertEquals($uuid, $answer['uuid']);
     }
 
     /**
@@ -342,8 +342,8 @@ class GatewayTest extends TestCase
     {
         $omnireceipt = self::createOmnireceipt();
 
-        $id = 'pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
-        $response = $omnireceipt->detailsReceipt($id);
+        $uuid = 'pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10';
+        $response = $omnireceipt->detailsReceipt($uuid);
         $this->assertTrue($response->isSuccessful());
 
         /** @var \Omnireceipt\Dummy\Entities\Receipt $receipt */

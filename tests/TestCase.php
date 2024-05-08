@@ -38,6 +38,11 @@ abstract class TestCase extends UnitTestCase
     {
         return new class($parameters) extends Receipt
         {
+            public function getId(): string
+            {
+                return '123';
+            }
+
             public function isPending(): bool
             {
                 return false;
