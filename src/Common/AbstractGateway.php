@@ -25,12 +25,6 @@ use Omnireceipt\Common\Supports\Helper;
 use Omnireceipt\Common\Supports\ParametersTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @method static string classNameReceipt()
- * @method static string classNameCreateReceiptRequest()
- * @method static string classNameListReceiptsRequest()
- * @method static string classNameDetailsReceiptRequest()
- */
 abstract class AbstractGateway implements GatewayInterface
 {
     use ParametersTrait;
@@ -144,9 +138,9 @@ abstract class AbstractGateway implements GatewayInterface
     // Receipt and ReceiptItem
     //#########################
 
-    public static function classNameReceiptItem(): string
+    public function classNameReceiptItem(): string
     {
-        return static::classNameReceipt() . 'Item';
+        return $this->classNameReceipt() . 'Item';
     }
 
     /**
@@ -254,7 +248,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function createReceipt(Receipt $receipt, array $options = [], Seller $seller = null): AbstractCreateReceiptResponse
     {
         /** @var AbstractCreateReceiptRequest $request */
-        $request = $this->createRequest(static::classNameCreateReceiptRequest(), $options);
+        $request = $this->createRequest($this->classNameCreateReceiptRequest(), $options);
 
         $receipt->setSeller($seller ?? $this->getSeller());
         $customer = $this->getCustomer();
@@ -279,7 +273,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function listReceipts(array $options = []): AbstractListReceiptsResponse
     {
         /** @var AbstractListReceiptsResponse $response */
-        $response = $this->createRequest(static::classNameListReceiptsRequest(), $options)->send();
+        $response = $this->createRequest($this->classNameListReceiptsRequest(), $options)->send();
         return $response;
     }
 
@@ -293,7 +287,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function detailsReceipt(string $id): AbstractDetailsReceiptResponse
     {
         /** @var AbstractDetailsReceiptResponse $response */
-        $response = $this->createRequest(static::classNameDetailsReceiptRequest(), ['id' => $id])->send();
+        $response = $this->createRequest($this->classNameDetailsReceiptRequest(), ['id' => $id])->send();
         return $response;
     }
 

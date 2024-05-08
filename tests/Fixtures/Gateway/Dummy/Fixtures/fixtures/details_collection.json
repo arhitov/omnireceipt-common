@@ -1,0 +1,53 @@
+[
+  {
+    "uuid": "pending-2da5c87d-0384-50e8-a7f3-8d5646dd9e10",
+    "type": "payment",
+    "state": "pending",
+    "date": "2016-08-25 13:48:01",
+    "client_uuid": "4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f",
+    "client_name": "Alexander Arhitov",
+    "email": "clgsru@gmail.com",
+    "goods": [
+      {
+        "name": "Кондиционер БК-2300",
+        "quantity": 1,
+        "price": 80.25,
+        "amount": 80.25
+      }
+    ]
+  },
+  {
+    "uuid": "succeeded-2da5c87d-0384-50e8-a7f3-8d5646dd9e10",
+    "type": "payment",
+    "state": "succeeded",
+    "date": "2016-08-25 13:48:01",
+    "client_uuid": "4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f",
+    "client_name": "Alexander Arhitov",
+    "email": "clgsru@gmail.com",
+    "goods": [
+      {
+        "name": "Кондиционер БК-2300",
+        "quantity": 1,
+        "price": 80.25,
+        "amount": 80.25
+      }
+    ]
+  },
+  {
+    "uuid": "canceled-2da5c87d-0384-50e8-a7f3-8d5646dd9e10",
+    "type": "payment",
+    "state": "canceled",
+    "date": "2016-08-25 13:48:01",
+    "client_uuid": "4a65ecb6-8b1b-11df-be16-e0cb4ed5f70f",
+    "client_name": "Alexander Arhitov",
+    "email": "clgsru@gmail.com",
+    "goods": [
+      {
+        "name": "Кондиционер БК-2300",
+        "quantity": 1,
+        "price": 80.25,
+        "amount": 80.25
+      }
+    ]
+  }
+]

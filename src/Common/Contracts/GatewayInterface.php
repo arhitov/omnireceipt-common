@@ -51,21 +51,21 @@ interface GatewayInterface
     // Seller
     //########
 
-    public static function classNameSeller(): string;
+    public function classNameSeller(): string;
     public function getDefaultParametersSeller(): array;
 
     //##########
     // Customer
     //##########
 
-    public static function classNameCustomer(): string;
+    public function classNameCustomer(): string;
     public function getDefaultParametersCustomer(): array;
 
     //#########################
     // Receipt and ReceiptItem
     //#########################
 
-    public static function classNameReceipt(): string;
+    public function classNameReceipt(): string;
     public function getDefaultParametersReceipt(): array;
     public function getDefaultParametersReceiptItem(): array;
 
@@ -73,7 +73,7 @@ interface GatewayInterface
     // HTTP Request Methods
     //######################
 
-    public static function classNameCreateReceiptRequest(): string;
-    public static function classNameListReceiptsRequest(): string;
-    public static function classNameDetailsReceiptRequest(): string;
+    public function classNameCreateReceiptRequest(): string;
+    public function classNameListReceiptsRequest(): string;
+    public function classNameDetailsReceiptRequest(): string;
 }
